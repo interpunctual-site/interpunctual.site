@@ -1335,51 +1335,300 @@ button[type="submit"]:disabled {
 
 .recipe-section {
     margin-bottom: 1.25rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid rgba(224, 242, 254, 0.14);
+    background: rgba(224, 242, 254, 0.04);
+}
+
+.ingredient-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.25rem 0 0.5rem;
+    font-size: 95%;
+}
+
+.ingredient-table thead {
+    background: rgba(224, 242, 254, 0.15);
+    border-top: 1px solid var(--text);
+    border-bottom: 2px solid var(--text);
+}
+
+.ingredient-table th {
+    padding: 0.7rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03125rem;
+    color: var(--text);
+    font-size: 90%;
+}
+
+.ingredient-table tbody tr {
+    border-bottom: 1px solid rgba(224, 242, 254, 0.2);
+    transition: background 0.075s;
+}
+
+.ingredient-table tbody tr:hover {
+    background: rgba(255, 212, 71, 0.05);
+}
+
+.ingredient-table td {
+    padding: 0.7rem 0.8rem;
+    line-height: 1.6;
+    vertical-align: top;
+}
+
+.ingredient-table td:first-child {
+    width: 42%;
+}
+
+.ingredient-table td:nth-child(2) {
+    width: 24%;
+    opacity: 0.9;
+}
+
+.ingredient-table td:last-child {
+    /* width: 34%; */
+    opacity: 0.9;
+}
+
+.ingredient-table .ingredient-link {
+    display: inline-block;
+    color: var(--text);
+    border-bottom: none;
+}
+
+.ingredient-table .ingredient-link:hover,
+.ingredient-table .ingredient-link:active {
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.25);
 }
 
 .recipe-section-title {
     font-size: 110%;
     font-weight: 600;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 0.0625rem;
     opacity: 0.85;
+    color: var(--accent);
+}
+
+.recipe-title-total {
+    margin-left: 0.5rem;
+    font-size: 85%;
+    color: var(--text-dim);
+}
+
+.recipe-subsection {
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed rgba(224, 242, 254, 0.16);
+}
+
+.recipe-subsection:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.subsection-title {
+    font-size: 95%;
+    margin-bottom: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    opacity: 0.9;
 }
 
 .ingredients-list {
     list-style: none;
     padding-left: 0;
+    display: grid;
+    gap: 0.25rem;
 }
 
 .ingredients-list li {
-    padding: 0.5rem 0;
-    padding-left: 1.25rem;
-    position: relative;
-    opacity: 0.9;
-    line-height: 1.5;
+    padding: 0;
+    margin-left: 0.2rem;
 }
 
-.ingredients-list li::before {
-    content: "–";
+.ingredients-list .ingredient-link {
+    display: block;
+    padding: 0.45rem 0.65rem 0.45rem 1.2rem;
+    position: relative;
+    opacity: 0.95;
+    line-height: 1.55;
+    border-left: 1px solid rgba(255, 212, 71, 0.35);
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--text);
+    border-bottom: none;
+}
+
+.ingredients-list .ingredient-link::before {
+    content: "•";
     position: absolute;
-    left: 0;
+    left: 0.35rem;
     color: var(--accent);
     font-weight: 600;
+}
+
+.ingredients-list .ingredient-link:hover,
+.ingredients-list .ingredient-link:active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.25);
 }
 
 .procedure-list {
     padding-left: 1.25rem;
     opacity: 0.9;
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
 }
 
-.procedure-list li {
-    margin-bottom: 0.625rem;
-    line-height: 1.5;
+.procedure-list > li {
+    line-height: 1.6;
+    padding-left: 0.25rem;
 }
 
 .procedure-list li::marker {
     color: var(--accent);
     font-weight: 600;
+}
+
+.procedure-list ul,
+.procedure-list ol {
+    margin: 0.35rem 0 0.25rem 1rem;
+    padding-left: 1rem;
+    display: grid;
+    gap: 0.3rem;
+}
+
+.procedure-list ul li,
+.procedure-list ol li {
+    line-height: 1.5;
+    padding-left: 0;
+}
+
+.procedure-substeps {
+    margin-top: 0.4rem;
+    padding-left: 0.75rem;
+}
+
+.procedure-substeps > li {
+    margin-bottom: 0.3rem;
+}
+
+.log-entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.log-entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.logs-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0;
+}
+
+.log-entry-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.log-entry-link {
+    display: block;
+    font-size: clamp(87.5%, 1.2vw, 95%);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.075s ease;
+    padding: 0.35rem 0;
+}
+
+.log-entry-link:hover,
+.log-entry-link:active,
+.log-entry-link.is-active {
+    color: var(--accent);
+    border-bottom-color: rgba(255, 212, 71, 0.6);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.35);
+}
+
+.log-entry-meta {
+    font-size: 85%;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+}
+
+.log-entry-content {
+    margin-top: 1rem;
+}
+
+.entry-title {
+    font-size: 140%;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+}
+
+.entry-subtitle {
+    font-size: 95%;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+.serving-control {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(224, 242, 254, 0.16);
+    border-bottom: 1px solid rgba(224, 242, 254, 0.16);
+}
+
+.serving-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+}
+
+.serving-value {
+    color: var(--accent);
+    font-size: 90%;
+}
+
+.recipe-subsection {
+    margin-bottom: 1rem;
+}
+
+.recipe-total {
+    margin-top: 0.25rem;
+    font-size: 90%;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.note-box {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid rgba(224, 242, 254, 0.16);
+    background: rgba(224, 242, 254, 0.06);
+    line-height: 1.7;
+    display: grid;
+    gap: 0.35rem;
 }
 
 /* Scroll Containers */

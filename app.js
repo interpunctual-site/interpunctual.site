@@ -107,16 +107,16 @@ document.addEventListener('mousemove', (e) => {
     setCursorVisible(true);
     
     // Check for clickable elements: links, buttons, or elements with cursor: pointer
-    const isClickable = target && (
-        target.tagName === 'A' || 
-        target.tagName === 'BUTTON' || 
-        target.tagName === 'INPUT' && (target.type === 'button' || target.type === 'submit' || target.type === 'checkbox' || target.type === 'radio') ||
+    const isClickable = !!(target && (
+        target.tagName === 'A' ||
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'INPUT' && (target.type === 'button' || target.type === 'submit' || target.type === 'checkbox' || target.type === 'radio' || target.type === 'range') ||
         target.tagName === 'SELECT' ||
         target.tagName === 'VIDEO' ||
         target.tagName === 'AUDIO' ||
         target.tagName === 'IFRAME' ||
         target.tagName === 'IMG' && target.style.cursor === 'pointer' ||
-        target.closest('a, button, [role="button"], [role="tab"], [role="link"], .project-media img, .project-media video, .project-media iframe') ||
+        target.closest('a, button, input[type="range"], [role="button"], [role="tab"], [role="link"], .project-media img, .project-media video, .project-media iframe') ||
         target.getAttribute('role') === 'button' ||
         target.getAttribute('role') === 'tab' ||
         target.getAttribute('role') === 'link' ||
@@ -130,7 +130,7 @@ document.addEventListener('mousemove', (e) => {
         target.classList.contains('carousel-next') ||
         target.classList.contains('expandable') ||
         (target.tagName === 'IMG' && target.closest('.project-media'))
-    );
+    ));
     
     const shouldHover = isClickable;
     
@@ -167,6 +167,7 @@ function sleep(ms) {
 }
 
 function setWidthForLen(len) {
+    if (!wordElement) return;
     // animate horizontal scoot via width transition in CSS
     wordElement.style.width = `${len}ch`;
 }
@@ -197,6 +198,7 @@ function adjustTitleScale() {
 }
 
 async function typeWord(word) {
+    if (!wordElement) return;
     wordElement.classList.add('typing');
     // Move caret one space before first letter to reduce jitter
     setWidthForLen(1);
@@ -213,6 +215,7 @@ async function typeWord(word) {
 }
 
 async function deleteWord() {
+    if (!wordElement) return;
     wordElement.classList.add('typing');
     let current = wordElement.textContent.length;
     // Delete down to 1ch, keeping caret aligned with last visible char
@@ -232,6 +235,7 @@ async function deleteWord() {
 }
 
 async function runLoop() {
+    if (!wordElement) return;
     // start blank
     wordElement.textContent = '';
     setWidthForLen(0);
@@ -254,7 +258,9 @@ async function runLoop() {
 // Adjust title scale on window resize
 window.addEventListener('resize', adjustTitleScale);
 
-runLoop();
+if (wordElement) {
+    runLoop();
+}
 
 function displayWord(text) {
     wordElement.innerHTML = '';

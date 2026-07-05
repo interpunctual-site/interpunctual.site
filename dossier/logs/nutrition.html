@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>interpunctual nutrition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="icon" type="image/x-icon" href="../../media/interpunct-favicon.ico">
+</head>
+<body>
+    <video autoplay muted loop playsinline>
+        <source src="../../media/site-bg.mp4" type="video/mp4">
+    </video>
+    <div class="container">
+        <h1 class="title">nutrition</h1>
+
+        <div class="content-scroll">
+            <!--<div class="log-entry-content">-->
+                <!-- <h2 class="entry-title">nutrition</h2> -->
+                <!-- Placeholder abstract: a brief note about the diet's rhythm, intention, and the role of these meals. -->
+                <!-- <p class="entry-subtitle">moondust breakfast • starlight dinner</p> -->
+
+                <div class="recipe-section">
+                    <h3 class="recipe-section-title">moondust breakfast <span id="moondust-dish-total" class="recipe-title-total"></span></h3>
+                    <p class="recipe-meta">• arepa topped w/peanut butter<br>• blueberry oats</p>
+
+                    <div class="serving-control">
+                        <label for="moondust-slider">servings</label>
+                        <input type="range" id="moondust-slider" min="1" max="10" value="1" step="0.25">
+                        <span id="moondust-value" class="serving-value">1</span>
+                    </div>
+
+                    <h4 class="subsection-title">arepas</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moondust-arepas"></tbody>
+                    </table>
+                    <p id="moondust-arepas-total" class="recipe-total"></p>
+
+                                        <h4 class="subsection-title">oats</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moondust-bowl"></tbody>
+                    </table>
+                    <p id="moondust-bowl-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">Method</h4>
+                    <ol class="procedure-list">
+                        <li><strong>pre-production: 5 minutes</strong></li>
+                        <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>gradually add warm water to the salted cornmeal.</li>
+                            <li>hand-mix until the dough is malleable yet holds its shape without sticking to the hands.</li>
+                            </ul>
+                            <li><strong>oats</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>bring milk to a boil in a small saucepan</li>
+                            <li>melt ghee in the skillet over medium-high heat.</li>
+                            </ul>
+                        </ul>
+
+                        <li><strong>production: 7.5 minutes</strong></li>
+                        <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>roll dough into a sphere, then flatten and pan-fry.</li>
+                            <li>flip the disc once it releases easily from the cooking surface.</li>
+                            <li>each side of the arepa should be golden-brown with some charred spots.</li>
+                            </ul>
+                            <li><strong>oats:</strong> add oats to milk and simmer for about 1 minute until thickened.</li>
+                        </ul>
+                        <li><strong>post-production: 2.5 minutes</strong></li>
+                        <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>remove corn flour patty from the heat and wrap in a clean paper towel to cool and absorb excess butter.</li>
+                            <li>spread peanut butter over the warm flatbread.</li>
+                            </ul>
+                            <li><strong>oats:</strong> pour frozen blueberries into oats and stir to combine before serving in a bowl.</li>
+                        </ul>
+                    </ol>
+                </div>
+
+                <div class="recipe-section">
+                    <h3 class="recipe-section-title">starlight dinner <span id="starlight-dish-total" class="recipe-title-total"></span></h3>
+                    <p class="recipe-meta">• arepa filled w/quinoa fried rice<br>• mango curry sauce</p>
+
+                    <div class="serving-control">
+                        <label for="starlight-slider">servings</label>
+                        <input type="range" id="starlight-slider" min="1" max="10" value="1" step="0.25">
+                        <span id="starlight-value" class="serving-value">1</span>
+                    </div>
+
+                    <h4 class="subsection-title">arepas</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="starlight-arepas"></tbody>
+                    </table>
+                    <p id="starlight-arepas-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">veggie sauté and garbanzo beans</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="starlight-sauté"></tbody>
+                    </table>
+                    <p id="starlight-sauté-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">quinoa</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="starlight-quinoa"></tbody>
+                    </table>
+                    <p id="starlight-quinoa-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">rice</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="starlight-rice"></tbody>
+                    </table>
+                    <p id="starlight-rice-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">sauce</h4>
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="starlight-sauce"></tbody>
+                    </table>
+                    <p id="starlight-sauce-total" class="recipe-total"></p>
+
+                    <h4 class="subsection-title">Method</h4>
+                    <ol class="procedure-list">
+                        <li><strong>pre-production: 10 minutes</strong></li>
+                        <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>gradually add warm water to the salted cornmeal.</li>
+                            <li>hand-mix until the dough is malleable yet holds its shape without sticking to the hands.</li>
+                            </ul>
+                            <li><strong>veggie sauté and garbanzo beans</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>dice the onions and bell pepper.</li>
+                            <li>drain and rinse garbanzo beans.</li>
+                            </ul>
+                            <li><strong>grains</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li>rinse the quinoa and rice separately.</li>
+                            <li>heat the olive oil in a skillet over medium-high heat.</li>
+                            <li>heat dry skillet over medium-high heat.</li>
+                            <li>combine melted butter with water in a medium saucepan and bring to a boil.</li>
+                            <li>bring a small saucepan of water to a boil.</li>
+                            </ul>
+                        </ul>
+
+                        <li><strong>production: 30 minutes</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>add ghee to dry skillet and melt on medium-high heat.</li>
+                                <li>roll dough into a sphere, then flatten and pan-fry.</li>
+                                <li>flip the disc once it releases easily from the cooking surface.</li>
+                                <li>each side of the arepa should be golden-brown with some charred spots.</li>
+                            </ul>
+                            <li><strong>veggie sauté and garbanzo beans</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>place onions and bell pepper into a large skillet with olive oil.</li>
+                                <li>add and stir in minced garlic.</li>
+                                <li>sauté vegetables until their edges are slightly charred.</li>
+                                <li>fold in garbanzo beans seasoned with salt and pepper.</li>
+                            </ul>
+                            <li><strong>grains</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>toast the quinoa in a dry skillet until lightly browned.</li>
+                                <li>pour rice into a medium saucepan, then salt and stir.</li>
+                                <li>salt and pepper the quinoa, then pour into a small saucepan.</li>
+                                <li>cover medium saucepan and simmer for 15 minutes.</li>
+                                <li>cover small saucepan and simmer for 7.5 minutes.</li>
+                                <li>add buttered, salted, and peppered frozen corn to small saucepan.</li>
+                                <li>cover small saucepan and simmer for 7.5 minutes.</li>
+                            </ul>
+                            <li><strong>quinoa fried rice</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>remove the medium saucepan from heat and leave covered for 10 minutes before fluffing.</li>
+                                <li>mix quinoa, corn, and rice into the sautéed vegetables in a large skillet on medium-high heat for 2.5 minutes.</li>
+                            </ul>
+                            <li><strong>mango curry sauce</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>add coconut milk, curry paste, turmeric, cayenne, paprika, coriander, brown sugar, and mango into a small saucepan.</li>
+                                <li>bring the sauce to a boil, then reduce heat, cover, and simmer until mango is tender (approximately 2.5 minutes).</li>
+                            </ul>
+                        </ul>
+                        </ul>
+                        <li><strong>post-production: 5 minutes</strong></li>
+                        <ul style="padding-left: 1.25rem;">
+                            <li><strong>arepa</strong></li>
+                            <ul style="padding-left: 1.25rem;">
+                                <li>remove corn flour patty from the heat and wrap in a clean paper towel to cool and absorb excess butter.</li>
+                                <li>slice the arepa and serve alongside the main dish.</li>
+                            </ul>
+                            <li><strong>quinoa fried rice:</strong> serve quinoa fried rice filling in a bowl.</li>
+                            <li><strong>mango curry sauce:</strong> pour mango curry sauce over the quinoa fried rice.</li>
+                        </ul>
+                    </ol>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>water:</strong> drink 2-3 liters of water at the top of the day.</p>
+                    <p><strong>snacks:</strong> compensate for any calorie deficit by consuming snacks with and between meals <span style="font-size: 0.75rem; line-height: 1.1;">(e.g., 839 calorie breakfast + 1006 calorie dinner + [2 x 200 calorie coca-cola] + 270 calorie blueberry yogurt w/granola and honey ≈ 2600 calories)</span>.</p>
+                </div>
+            <!--</div>-->
+        </div>
+
+        <nav class="linktree">
+            <ul>
+                <li><a href="../logs.html" id="back-link" class="form-back">back</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="../../app.js"></script>
+    <script>
+        const moondustSlider = document.getElementById('moondust-slider');
+        const moondustValue = document.getElementById('moondust-value');
+        const starlightSlider = document.getElementById('starlight-slider');
+        const starlightValue = document.getElementById('starlight-value');
+
+        const recipeData = {
+            'moondust-bowl': [
+                { name: 'quick oats', base: 0.5, unit: 'cup', cost: 0.14, calories: '150', url: 'https://www.walmart.com/ip/Great-Value-Whole-Grain-Quick-Rolled-Oats/10314926?wl13=3286&wmlspartner=wlpa&selectedSellerId=0' },
+                { name: 'frozen blueberries', base: 0.5, unit: 'cup', cost: 0.52, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Wild-Blueberries-40-oz-Frozen/700604894?classType=REGULAR&athbdg=L1200&from=/search' },
+                { name: 'lactose-free milk', base: 1, unit: 'cup', cost: 0.39, calories: '130', url: 'https://www.walmart.com/ip/Great-Value-Lactose-Free-2-Reduced-Fat-Milk-Half-Gallon-64-fl-oz/11979181?classType=REGULAR&athbdg=L1600&from=/search' }
+            ],
+            'moondust-arepas': [
+                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&from=/search' },
+                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-10-58-oz-Jar/255011649?classType=REGULAR&athbdg=L1200&from=/search' },
+                { name: 'peanut butter', base: 2, unit: 'tbsp', cost: 0.17, calories: '200', url: 'https://www.walmart.com/ip/Peter-Pan-Creamy-Honey-Roasted-Peanut-Butter-Smooth-Gluten-Free-40-oz-Jar/29087945?classType=VARIANT&athbdg=L1102&from=/search' }
+            ],
+            'starlight-sauté': [
+                { name: 'olive oil', base: 2 / 9.25, unit: 'tbsp', cost: 0.47 / 9.25, calories: '26', url: 'https://www.walmart.com/ip/Terra-Delyssa-Organic-Extra-Virgin-Olive-Oil-34-fl-oz-Glass/174040925?classType=VARIANT&athbdg=L1600&from=/search' },
+                { name: 'diced yellow onion', base: 1.75 / 9.25, unit: 'cup', cost: 0.64 / 9.25, calories: '22', url: 'https://www.walmart.com/ip/Fresh-Yellow-Onions-3-lb-Bag/10447842?classType=REGULAR&athbdg=L1102&from=/search' },
+                { name: 'diced bell pepper', base: 1.75 / 9.25, unit: 'cup', cost: 3.04 / 9.25, calories: '9', url: 'https://www.walmart.com/ip/Fresh-Red-Bell-Pepper-1-Each/44391581?classType=REGULAR&athbdg=L1600&from=/search' },
+                { name: 'minced garlic', base: 1 / 9.25, unit: 'tbsp', cost: 0.22 / 9.25, calories: '2', url: 'https://www.walmart.com/ip/Spice-World-Minced-Garlic-8-oz/10320871?classType=REGULAR&athbdg=L1600&from=/search' },
+                { name: 'garbanzo beans', base: 1.75 / 9.25, unit: 'cup', cost: 0.86 / 9.25, calories: '45', url: 'https://www.walmart.com/ip/Great-Value-Garbanzos-Chick-Peas-15-5-oz/10534041?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'black pepper', base: 1 / 9.25, unit: 'tsp', cost: 0.16 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Can/44981957?classType=REGULAR&athbdg=L1600&from=/search' }
+            ],
+            'starlight-quinoa': [
+                { name: 'cooked quinoa', base: 1 / 9.25, unit: 'cup', cost: 0.69, calories: '37', url: 'https://www.walmart.com/ip/Great-Value-Organic-Tri-Color-Quinoa-16-oz/51258776?classType=REGULAR&athbdg=L1200&from=/search' },
+                { name: 'iodized salt', base: 0.25 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'black pepper', base: 0.25 / 9.25, unit: 'tsp', cost: 0.04 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Can/44981957?classType=REGULAR&athbdg=L1600&from=/search' },
+                { name: 'frozen corn', base: 1 / 9.25, unit: 'cup', cost: 0.37 / 9.25, calories: '13', url: 'https://www.walmart.com/ip/Great-Value-Frozen-Whole-Kernel-Corn-32-oz-Steamable-Bag/571358544?classType=REGULAR&athbdg=L1102&from=/search' },
+                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', cost: 0.42 / 9.25, calories: '10',url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-10-58-oz-Jar/255011649?classType=REGULAR&athbdg=L1200&from=/search' }
+            ],
+            'starlight-rice': [
+                { name: 'cooked rice', base: 2 / 9.25, unit: 'cup', cost: 0.71 / 9.25, calories: '69', url: 'https://www.walmart.com/ip/Great-Value-Basmati-Rice-5-lb/36874824?classType=REGULAR&athbdg=L1300&from=/search' },
+                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', calories: '10', cost: 0.42 / 9.25, url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-10-58-oz-Jar/255011649?classType=REGULAR&athbdg=L1200&from=/search' }
+            ],
+            'starlight-sauce': [
+                { name: 'coconut milk', base: 1, unit: 'cup', cost: 2.14, calories: '300', url: 'https://www.walmart.com/ip/Thai-Kitchen-Non-GMO-Gluten-Free-Coconut-Milk-25-36-fl-oz-Brick/359649635?classType=VARIANT&from=/search' },
+                { name: 'frozen mango', base: 0.5, unit: 'cup', cost: 0.47, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Mango-Chunks-Frozen-48-oz/46807534?classType=REGULAR&from=/search' },
+                { name: 'curry paste', base: 2, unit: 'tsp', cost: 0.10, calories: '15', url: 'https://www.walmart.com/ip/Mae-Ploy-Yellow-Curry-Paste-14-oz-1-Count-Jar/36308454?classType=VARIANT&from=/search' },
+                { name: 'brown sugar', base: 2, unit: 'tsp', cost: 0.02, calories: '30', url: 'https://www.walmart.com/ip/Great-Value-Light-Brown-Sugar-32-oz/10315012?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'ground turmeric', base: 1, unit: 'tbsp', cost: 0.25, calories: '24', url: 'https://www.walmart.com/ip/Great-Value-Ground-Turmeric-2-oz/446901861?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'cayenne pepper', base: 2, unit: 'tsp', cost: 0.25, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Cayenne-Pepper-2-25-oz/444055049?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'paprika', base: 1, unit: 'tsp', cost: 0.04, calories: '6', url: 'https://www.walmart.com/ip/Great-Value-Paprika-2-5-oz/559839182?classType=REGULAR&athbdg=L1200&from=/search' },
+                { name: 'ground coriander', base: 1, unit: 'tsp', cost: 0.29, calories: '5', url: 'https://www.walmart.com/ip/Great-Value-Organic-Ground-Coriander-1-5-oz-Bottle/50597552?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'red pepper', base: 1, unit: 'tbsp', cost: 0.14, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Crushed-Red-Pepper-1-75-oz/217612954?classType=VARIANT&athbdg=L1200&from=/search' }
+            ],
+            'starlight-arepas': [
+                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&from=/search' },
+                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-10-58-oz-Jar/255011649?classType=REGULAR&athbdg=L1200&from=/search' }
+            ]
+        };
+
+        function formatQuantity(value) {
+            const rounded = Math.round(value * 100) / 100;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+        }
+
+        // function formatUnit(unit, quantity) {
+        //     if (unit === 'cup') {
+        //         return quantity === 1 ? 'CUP' : 'CUPS';
+        //     }
+        //     if (unit === 'tbsp') {
+        //         return 'TBSP';
+        //     }
+        //     if (unit === 'tsp') {
+        //         return 'TSP';
+        //     }
+        //     return unit.toUpperCase();
+        // }
+
+        function calculateSectionTotal(items, multiplier) {
+            return items.reduce((sum, item) => sum + item.cost * multiplier, 0);
+        }
+
+        function calculateSectionCalories(items, multiplier) {
+            return items.reduce((sum, item) => {
+                if (!item.calories) return sum;
+                const numericCalories = parseFloat(item.calories.replace(/[^0-9.]/g, ''));
+                return sum + (Number.isNaN(numericCalories) ? 0 : numericCalories * multiplier);
+            }, 0);
+        }
+
+        function formatCaloriesValue(calories, multiplier) {
+            if (!calories) return '';
+            const rawCalories = String(calories).trim();
+            const prefix = rawCalories.startsWith('~') ? '~' : '';
+            const numericCalories = parseFloat(rawCalories.replace(/[^0-9.]/g, ''));
+            if (Number.isNaN(numericCalories)) return '';
+            const scaledCalories = numericCalories * multiplier;
+            return `${prefix}${Math.round(scaledCalories)}`;
+        }
+
+        function renderRecipe(listId, items, multiplier) {
+            const tableBody = document.getElementById(listId);
+            const totalElement = document.getElementById(listId + '-total');
+            const totalCost = calculateSectionTotal(items, multiplier);
+            const totalCalories = calculateSectionCalories(items, multiplier);
+
+            tableBody.innerHTML = items.map((item) => {
+                const quantity = item.base * multiplier;
+                const amount = `${formatQuantity(quantity)} ${item.unit}`;
+                const cost = (item.cost * multiplier).toFixed(2);
+                const calText = item.calories ? formatCaloriesValue(item.calories, multiplier) : '';
+                return `<tr><td><a class="ingredient-link" href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">${item.name}</a></td><td>${amount}</td><td>$${cost}</td><td>${calText}</td></tr>`;
+            }).join('');
+
+            if (totalElement) {
+                totalElement.textContent = `TOTAL ≈ $${totalCost.toFixed(2)} • ${Math.round(totalCalories)} CAL`;
+            }
+        }
+
+        function updateMoondustView() {
+            const multiplier = Number(moondustSlider.value);
+            moondustValue.textContent = `${multiplier}`;
+
+            renderRecipe('moondust-bowl', recipeData['moondust-bowl'], multiplier);
+            renderRecipe('moondust-arepas', recipeData['moondust-arepas'], multiplier);
+
+            const dishCost = calculateSectionTotal(recipeData['moondust-bowl'], multiplier) + calculateSectionTotal(recipeData['moondust-arepas'], multiplier);
+            const dishCalories = calculateSectionCalories(recipeData['moondust-bowl'], multiplier) + calculateSectionCalories(recipeData['moondust-arepas'], multiplier);
+            document.getElementById('moondust-dish-total').textContent = `• total $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL • 15 min`;
+        }
+
+        function updateStarlightView() {
+            const multiplier = Number(starlightSlider.value);
+            starlightValue.textContent = `${multiplier}`;
+
+            renderRecipe('starlight-sauté', recipeData['starlight-sauté'], multiplier);
+            renderRecipe('starlight-quinoa', recipeData['starlight-quinoa'], multiplier);
+            renderRecipe('starlight-rice', recipeData['starlight-rice'], multiplier);
+            renderRecipe('starlight-sauce', recipeData['starlight-sauce'], multiplier);
+            renderRecipe('starlight-arepas', recipeData['starlight-arepas'], multiplier);
+
+            const dishCost = calculateSectionTotal(recipeData['starlight-sauté'], multiplier) + calculateSectionTotal(recipeData['starlight-quinoa'], multiplier) + calculateSectionTotal(recipeData['starlight-rice'], multiplier) + calculateSectionTotal(recipeData['starlight-sauce'], multiplier) + calculateSectionTotal(recipeData['starlight-arepas'], multiplier);
+            const dishCalories = calculateSectionCalories(recipeData['starlight-sauté'], multiplier) + calculateSectionCalories(recipeData['starlight-quinoa'], multiplier) + calculateSectionCalories(recipeData['starlight-rice'], multiplier) + calculateSectionCalories(recipeData['starlight-sauce'], multiplier) + calculateSectionCalories(recipeData['starlight-arepas'], multiplier);
+            document.getElementById('starlight-dish-total').textContent = `• total $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL • 45 min`;
+        }
+
+        moondustSlider.addEventListener('input', updateMoondustView);
+        starlightSlider.addEventListener('input', updateStarlightView);
+        updateMoondustView();
+        updateStarlightView();
+    </script>
+</body>
+</html>
