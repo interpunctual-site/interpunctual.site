@@ -16,8 +16,25 @@
     .table-responsive {
       width: 100%;
       overflow-x: auto;
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
       margin-bottom: 1rem;
+      max-height: 400px; /* allow vertical scrolling for long tables */
+      position: relative;
+    }
+
+    /* Add scrollbar hint */
+    .table-responsive::after {
+      content: '⬅ scroll ➡';
+      position: sticky;
+      bottom: -1.5rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.5rem 0;
+      pointer-events: none;
     }
 
     /* Keep table layout stable on wide screens; ensure full-width within the wrapper */
@@ -37,6 +54,11 @@
         padding: 0.5rem 0.6rem;
         white-space: nowrap; /* keep each column intact so horizontal scroll is usable */
       }
+      
+      /* Show scroll hint only on mobile */
+      .table-responsive::after {
+        display: block;
+      }
     }
 
     /* When viewport is wider than min-width, remove forced min-width so table sits normally */
@@ -44,6 +66,11 @@
       .table-responsive .ingredient-table {
         min-width: 0;
         table-layout: auto;
+      }
+      
+      /* Hide scroll hint on desktop */
+      .table-responsive::after {
+        display: none;
       }
     }
     </style>
@@ -308,7 +335,7 @@
 
                 <div class="note-box">
                     <p><strong>water:</strong> drink 2-3 liters of water at the top of the day.</p>
-                    <p><strong>snacks:</strong> compensate for any calorie deficit by consuming snacks with and between meals <span style="font-size: 0.75rem; line-height: 1.1;">(e.g., 839 calori[...]</p>
+                    <p><strong>snacks:</strong> compensate for any calorie deficit by consuming snacks with and between meals <span style="font-size: 0.75rem; line-height: 1.1;">(e.g., 839 calorie deficit → 700 cal snack + 150 cal snack)</span></p>
                 </div>
             <!--</div>-->
         </div>
@@ -329,52 +356,52 @@
 
         const recipeData = {
             'moondust-bowl': [
-                { name: 'quick oats', base: 0.5, unit: 'cup', cost: 0.14, calories: '150', url: 'https://www.walmart.com/ip/Great-Value-Whole-Grain-Quick-Rolled-Oats/10314926?wl13=3286&wmlspartne[...]
-                { name: 'frozen blueberries', base: 0.5, unit: 'cup', cost: 0.52, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Wild-Blueberries-40-oz-Frozen/700604894?classType=RE[...]
-                { name: 'lactose-free milk', base: 1, unit: 'cup', cost: 0.39, calories: '130', url: 'https://www.walmart.com/ip/Great-Value-Lactose-Free-2-Reduced-Fat-Milk-Half-Gallon-64-fl-oz/1[...]
+                { name: 'quick oats', base: 0.5, unit: 'cup', cost: 0.14, calories: '150', url: 'https://www.walmart.com/ip/Great-Value-Whole-Grain-Quick-Rolled-Oats/10314926?wl13=3286&wmlspartner=wlpa&selectedSellerId=0&swrs=false' },
+                { name: 'frozen blueberries', base: 0.5, unit: 'cup', cost: 0.52, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Wild-Blueberries-40-oz-Frozen/700604894?classType=REGULAR&from=/search' },
+                { name: 'lactose-free milk', base: 1, unit: 'cup', cost: 0.39, calories: '130', url: 'https://www.walmart.com/ip/Great-Value-Lactose-Free-2-Reduced-Fat-Milk-Half-Gallon-64-fl-oz/10447934?classType=REGULAR&from=/search' },
             ],
             'moondust-arepas': [
-                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&[...]
-                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200[...]
-                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-S[...]
-                { name: 'peanut butter', base: 2, unit: 'tbsp', cost: 0.17, calories: '200', url: 'https://www.walmart.com/ip/Peter-Pan-Creamy-Honey-Roasted-Peanut-Butter-Smooth-Gluten-Free-40-oz[...]
+                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&athb=&from=search' },
+                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-13-oz/680627236?classType=REGULAR&from=/search' },
+                { name: 'peanut butter', base: 2, unit: 'tbsp', cost: 0.17, calories: '200', url: 'https://www.walmart.com/ip/Peter-Pan-Creamy-Honey-Roasted-Peanut-Butter-Smooth-Gluten-Free-40-oz/52911555?classType=REGULAR&from=/search' },
             ],
             'starlight-sauté': [
-                { name: 'olive oil', base: 2 / 9.25, unit: 'tbsp', cost: 0.47 / 9.25, calories: '26', url: 'https://www.walmart.com/ip/Terra-Delyssa-Organic-Extra-Virgin-Olive-Oil-34-fl-oz-Glass/[...]
-                { name: 'diced yellow onion', base: 1.75 / 9.25, unit: 'cup', cost: 0.64 / 9.25, calories: '22', url: 'https://www.walmart.com/ip/Fresh-Yellow-Onions-3-lb-Bag/10447842?classType=R[...]
-                { name: 'diced bell pepper', base: 1.75 / 9.25, unit: 'cup', cost: 3.04 / 9.25, calories: '9', url: 'https://www.walmart.com/ip/Fresh-Red-Bell-Pepper-1-Each/44391581?classType=REG[...]
-                { name: 'minced garlic', base: 1 / 9.25, unit: 'tbsp', cost: 0.22 / 9.25, calories: '2', url: 'https://www.walmart.com/ip/Spice-World-Minced-Garlic-8-oz/10320871?classType=REGULAR[...]
-                { name: 'garbanzo beans', base: 1.75 / 9.25, unit: 'cup', cost: 0.86 / 9.25, calories: '45', url: 'https://www.walmart.com/ip/Great-Value-Garbanzos-Chick-Peas-15-5-oz/10534041?cla[...]
-                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&a[...]
-                { name: 'black pepper', base: 1 / 9.25, unit: 'tsp', cost: 0.16 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Ca[...]
+                { name: 'olive oil', base: 2 / 9.25, unit: 'tbsp', cost: 0.47 / 9.25, calories: '26', url: 'https://www.walmart.com/ip/Terra-Delyssa-Organic-Extra-Virgin-Olive-Oil-34-fl-oz-Glass/14555618?classType=REGULAR&from=/search' },
+                { name: 'diced yellow onion', base: 1.75 / 9.25, unit: 'cup', cost: 0.64 / 9.25, calories: '22', url: 'https://www.walmart.com/ip/Fresh-Yellow-Onions-3-lb-Bag/10447842?classType=REGULAR&from=/search' },
+                { name: 'diced bell pepper', base: 1.75 / 9.25, unit: 'cup', cost: 3.04 / 9.25, calories: '9', url: 'https://www.walmart.com/ip/Fresh-Red-Bell-Pepper-1-Each/44391581?classType=REGULAR&from=/search' },
+                { name: 'minced garlic', base: 1 / 9.25, unit: 'tbsp', cost: 0.22 / 9.25, calories: '2', url: 'https://www.walmart.com/ip/Spice-World-Minced-Garlic-8-oz/10320871?classType=REGULAR&from=/search' },
+                { name: 'garbanzo beans', base: 1.75 / 9.25, unit: 'cup', cost: 0.86 / 9.25, calories: '45', url: 'https://www.walmart.com/ip/Great-Value-Garbanzos-Chick-Peas-15-5-oz/10534041?classType=REGULAR&from=/search' },
+                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'black pepper', base: 1 / 9.25, unit: 'tsp', cost: 0.16 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Can/10325839?classType=REGULAR&from=/search' },
             ],
             'starlight-quinoa': [
-                { name: 'cooked quinoa', base: 1 / 9.25, unit: 'cup', cost: 0.69, calories: '37', url: 'https://www.walmart.com/ip/Great-Value-Organic-Tri-Color-Quinoa-16-oz/51258776?classType=RE[...]
-                { name: 'iodized salt', base: 0.25 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIAN[...]
-                { name: 'black pepper', base: 0.25 / 9.25, unit: 'tsp', cost: 0.04 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz[...]
-                { name: 'frozen corn', base: 1 / 9.25, unit: 'cup', cost: 0.37 / 9.25, calories: '13', url: 'https://www.walmart.com/ip/Great-Value-Frozen-Whole-Kernel-Corn-32-oz-Steamable-Bag/57[...]
-                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', cost: 0.42 / 9.25, calories: '10',url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Bu[...]
+                { name: 'cooked quinoa', base: 1 / 9.25, unit: 'cup', cost: 0.69, calories: '37', url: 'https://www.walmart.com/ip/Great-Value-Organic-Tri-Color-Quinoa-16-oz/51258776?classType=REGULAR&from=/search' },
+                { name: 'iodized salt', base: 0.25 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'black pepper', base: 0.25 / 9.25, unit: 'tsp', cost: 0.04 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Can/10325839?classType=REGULAR&from=/search' },
+                { name: 'frozen corn', base: 1 / 9.25, unit: 'cup', cost: 0.37 / 9.25, calories: '13', url: 'https://www.walmart.com/ip/Great-Value-Frozen-Whole-Kernel-Corn-32-oz-Steamable-Bag/57480934?classType=REGULAR&from=/search' },
+                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', cost: 0.42 / 9.25, calories: '10', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-13-oz/680627236?classType=REGULAR&from=/search' },
             ],
             'starlight-rice': [
-                { name: 'cooked rice', base: 2 / 9.25, unit: 'cup', cost: 0.71 / 9.25, calories: '69', url: 'https://www.walmart.com/ip/Great-Value-Basmati-Rice-5-lb/36874824?classType=REGULAR&at[...]
-                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&a[...]
-                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', calories: '10', cost: 0.42 / 9.25, url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-B[...]
+                { name: 'cooked rice', base: 2 / 9.25, unit: 'cup', cost: 0.71 / 9.25, calories: '69', url: 'https://www.walmart.com/ip/Great-Value-Basmati-Rice-5-lb/36874824?classType=REGULAR&athbdg=L1400&from=/search' },
+                { name: 'iodized salt', base: 1 / 9.25, unit: 'tsp', cost: 0.01 / 9.25, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'clarified butter', base: 1 / 9.25, unit: 'tbsp', calories: '10', cost: 0.42 / 9.25, url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-13-oz/680627236?classType=REGULAR&from=/search' },
             ],
             'starlight-sauce': [
-                { name: 'coconut milk', base: 1, unit: 'cup', cost: 2.14, calories: '300', url: 'https://www.walmart.com/ip/Thai-Kitchen-Non-GMO-Gluten-Free-Coconut-Milk-25-36-fl-oz-Brick/3596496[...]
-                { name: 'frozen mango', base: 0.5, unit: 'cup', cost: 0.47, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Mango-Chunks-Frozen-48-oz/46807534?classType=REGULAR&from=[...]
-                { name: 'curry paste', base: 2, unit: 'tsp', cost: 0.10, calories: '15', url: 'https://www.walmart.com/ip/Mae-Ploy-Yellow-Curry-Paste-14-oz-1-Count-Jar/36308454?classType=VARIANT&[...]
-                { name: 'brown sugar', base: 2, unit: 'tsp', cost: 0.02, calories: '30', url: 'https://www.walmart.com/ip/Great-Value-Light-Brown-Sugar-32-oz/10315012?classType=VARIANT&athbdg=L12[...]
-                { name: 'ground turmeric', base: 1, unit: 'tbsp', cost: 0.25, calories: '24', url: 'https://www.walmart.com/ip/Great-Value-Ground-Turmeric-2-oz/446901861?classType=VARIANT&athbdg=[...]
-                { name: 'cayenne pepper', base: 2, unit: 'tsp', cost: 0.25, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Cayenne-Pepper-2-25-oz/444055049?classType=VARIANT&athbdg=[...]
-                { name: 'paprika', base: 1, unit: 'tsp', cost: 0.04, calories: '6', url: 'https://www.walmart.com/ip/Great-Value-Paprika-2-5-oz/559839182?classType=REGULAR&athbdg=L1200&from=/sear[...]
-                { name: 'ground coriander', base: 1, unit: 'tsp', cost: 0.29, calories: '5', url: 'https://www.walmart.com/ip/Great-Value-Organic-Ground-Coriander-1-5-oz-Bottle/50597552?classType[...]
-                { name: 'red pepper', base: 1, unit: 'tbsp', cost: 0.14, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Crushed-Red-Pepper-1-75-oz/217612954?classType=VARIANT&athbdg=L120[...]
+                { name: 'coconut milk', base: 1, unit: 'cup', cost: 2.14, calories: '300', url: 'https://www.walmart.com/ip/Thai-Kitchen-Non-GMO-Gluten-Free-Coconut-Milk-25-36-fl-oz-Brick/359649683?classType=REGULAR&from=/search' },
+                { name: 'frozen mango', base: 0.5, unit: 'cup', cost: 0.47, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Mango-Chunks-Frozen-48-oz/46807534?classType=REGULAR&from=/search' },
+                { name: 'curry paste', base: 2, unit: 'tsp', cost: 0.10, calories: '15', url: 'https://www.walmart.com/ip/Mae-Ploy-Yellow-Curry-Paste-14-oz-1-Count-Jar/36308454?classType=VARIANT&athbdg=L1000&from=/search' },
+                { name: 'brown sugar', base: 2, unit: 'tsp', cost: 0.02, calories: '30', url: 'https://www.walmart.com/ip/Great-Value-Light-Brown-Sugar-32-oz/10315012?classType=VARIANT&athbdg=L1200&from=/search' },
+                { name: 'ground turmeric', base: 1, unit: 'tbsp', cost: 0.25, calories: '24', url: 'https://www.walmart.com/ip/Great-Value-Ground-Turmeric-2-oz/446901861?classType=VARIANT&athbdg=L1000&from=/search' },
+                { name: 'cayenne pepper', base: 2, unit: 'tsp', cost: 0.25, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Cayenne-Pepper-2-25-oz/444055049?classType=VARIANT&athbdg=L1000&from=/search' },
+                { name: 'paprika', base: 1, unit: 'tsp', cost: 0.04, calories: '6', url: 'https://www.walmart.com/ip/Great-Value-Paprika-2-5-oz/559839182?classType=REGULAR&athbdg=L1200&from=/search' },
+                { name: 'ground coriander', base: 1, unit: 'tsp', cost: 0.29, calories: '5', url: 'https://www.walmart.com/ip/Great-Value-Organic-Ground-Coriander-1-5-oz-Bottle/50597552?classType=REGULAR&from=/search' },
+                { name: 'red pepper', base: 1, unit: 'tbsp', cost: 0.14, calories: '12', url: 'https://www.walmart.com/ip/Great-Value-Crushed-Red-Pepper-1-75-oz/217612954?classType=VARIANT&athbdg=L1000&from=/search' },
             ],
             'starlight-arepas': [
-                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&[...]
-                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200[...]
-                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-S[...]
+                { name: 'harina p.a.n.', base: 0.5, unit: 'cup', cost: 0.21, calories: '293', url: 'https://www.walmart.com/ip/P-A-N-White-Corn-Meal-5-LB/141360548?classType=VARIANT&athbdg=L1600&athb=&from=search' },
+                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.01, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'clarified butter', base: 2, unit: 'tbsp', cost: 0.84, calories: '~26', url: 'https://www.walmart.com/ip/Servio-Grass-Fed-Non-GMO-Traditional-Ghee-Clarified-Butter-Shelf-Stable-13-oz/680627236?classType=REGULAR&from=/search' },
             ]
         };
 
@@ -429,7 +456,7 @@
                 const amount = `${formatQuantity(quantity)} ${item.unit}`;
                 const cost = (item.cost * multiplier).toFixed(2);
                 const calText = item.calories ? formatCaloriesValue(item.calories, multiplier) : '';
-                return `<tr><td><a class="ingredient-link" href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">${item.name}</a></td><td>${amount}</td><td>$${cost}</td><td>${calText}</t[...]
+                return `<tr><td><a class="ingredient-link" href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">${item.name}</a></td><td>${amount}</td><td>$${cost}</td><td>${calText}</td></tr>`;
             }).join('');
 
             if (totalElement) {
@@ -459,8 +486,8 @@
             renderRecipe('starlight-sauce', recipeData['starlight-sauce'], multiplier);
             renderRecipe('starlight-arepas', recipeData['starlight-arepas'], multiplier);
 
-            const dishCost = calculateSectionTotal(recipeData['starlight-sauté'], multiplier) + calculateSectionTotal(recipeData['starlight-quinoa'], multiplier) + calculateSectionTotal(recipeDa[...]
-            const dishCalories = calculateSectionCalories(recipeData['starlight-sauté'], multiplier) + calculateSectionCalories(recipeData['starlight-quinoa'], multiplier) + calculateSectionCalo[...]
+            const dishCost = calculateSectionTotal(recipeData['starlight-sauté'], multiplier) + calculateSectionTotal(recipeData['starlight-quinoa'], multiplier) + calculateSectionTotal(recipeData['starlight-rice'], multiplier) + calculateSectionTotal(recipeData['starlight-sauce'], multiplier) + calculateSectionTotal(recipeData['starlight-arepas'], multiplier);
+            const dishCalories = calculateSectionCalories(recipeData['starlight-sauté'], multiplier) + calculateSectionCalories(recipeData['starlight-quinoa'], multiplier) + calculateSectionCalories(recipeData['starlight-rice'], multiplier) + calculateSectionCalories(recipeData['starlight-sauce'], multiplier) + calculateSectionCalories(recipeData['starlight-arepas'], multiplier);
             document.getElementById('starlight-dish-total').textContent = `• total $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL • 45 min`;
         }
 
