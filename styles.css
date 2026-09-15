@@ -1830,7 +1830,7 @@ button[type="submit"]:disabled {
 }
 
 .glossary-table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
     margin-bottom: 1.875rem;
     font-size: 95%;
