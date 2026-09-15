@@ -1634,7 +1634,7 @@ button[type="submit"]:disabled {
 /* Scroll Containers */
 .content-scroll,
 .glossary-scroll {
-    width: calc(100vw - 1.75rem);
+    max-width: calc(100vw - 1.75rem);
     height: calc(100vh - 17.5rem);
     overflow-y: auto;
     overflow-x: hidden;
