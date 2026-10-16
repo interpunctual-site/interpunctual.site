@@ -1,94 +1,488 @@
-/* [original styles.css content preserved above] */
+/* Restored original styles.css and kept the later UX fixes */
+:root {
+    --bg: #334155;
+    --text: #e0f2fe;
+    --text-dim: rgba(224, 242, 254, 0.7);
+    --text-faint: rgba(224, 242, 254, 0.5);
+    --accent: #ffd447;
+    --accent-strong: #ffe97a;
+    --whiteblue-rgb: 224, 242, 254;
+    --whiteblue-glow: rgba(var(--whiteblue-rgb), 0.16);
+    --whiteblue-glow-strong: rgba(var(--whiteblue-rgb), 0.28);
+}
 
-/* Fix: ensure statement is not truncated and contact panel transitions */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none !important;
+}
+
+/* Force cursor none on all interactive elements */
+a, button, input, select, textarea, video, audio, iframe,
+[role="button"], [role="link"], [role="tab"],
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-panel {
+    cursor: none !important;
+}
+
+/* Restore system cursor over embeds */
+iframe {
+    cursor: auto !important;
+}
+
+/* Show default cursor only in fullscreen */
+:fullscreen,
+:fullscreen * {
+    cursor: auto !important;
+}
+
+.custom-cursor {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
+    z-index: 10002;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.5) 0%, rgba(255, 140, 0, 0.3) 50%, rgba(255, 140, 0, 0.1) 80%, transparent 100%);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 140, 0, 0.3));
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.custom-cursor svg {
+    width: 100%;
+    height: 100%;
+}
+
+.custom-cursor svg circle[r="14"] {
+    fill: rgba(255, 140, 0, 0.15);
+}
+
+.custom-cursor .circle-group {
+    transform-origin: center;
+    transition: none;
+}
+
+.custom-cursor.hovering .circle-group {
+    animation: rotateCircleCounter 2s linear infinite;
+}
+
+.custom-cursor.hovering.reverse .circle-group {
+    animation: rotateCircleCounter 2s linear infinite reverse;
+}
+
+.custom-cursor.hovering .chevron {
+    transform-origin: center;
+    animation: rotateCursor 2s linear infinite;
+}
+
+.custom-cursor.hovering.reverse .chevron {
+    animation: rotateCursor 2s linear infinite reverse;
+}
+
+.custom-cursor svg .chevron {
+    transform-origin: center;
+}
+
+.custom-cursor svg .chevron-inner {
+    transform-origin: center;
+}
+
+@keyframes rotateCursor {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCircleCounter {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: var(--bg);
+    background-image: url('../media/site-bg.mp4');
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    text-shadow: 0 0 0.5rem rgba(224, 242, 254, 0.5);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(51, 65, 85, 0.75);
+    pointer-events: none;
+    z-index: -1;
+}
+
+body > video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: -2;
+}
+
+.container {
+    text-align: left;
+    max-width: 37.5rem;
+    width: 100%;
+    padding: 2.5rem 1.25rem;
+}
+
+.subtitle,
+.title,
+.statement,
+.linktree,
+.form-row,
+.form-feedback,
+.form-actions,
+.description,
+.detail-line,
+.project-section,
+.log-entry-item,
+.section-title {
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    margin: 0 0 1rem;
+    color: var(--text);
+    text-shadow: 0 0 0.7rem rgba(224, 242, 254, 0.55);
+}
+
+.subtitle {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: lowercase;
+}
+
 .statement {
-  white-space: normal;        /* allow wrapping of the blurb so the 'read statement' link appears at the end */
-  overflow: visible;         /* don't clip the text */
-  text-overflow: clip;       /* prevent ellipses */
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
 }
 
 .statement .read-more {
-  display: inline-block;     /* keep the link visually grouped */
-  white-space: nowrap;       /* keep 'read statement' on one token */
-  vertical-align: baseline;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: baseline;
 }
 
-/* Improve contact panel motion so it stays hidden until opened and animates smoothly */
+/* Global Link Styles */
+a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a:hover {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.6);
+}
+
+a:active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.35);
+}
+
+.linktree ul {
+    list-style: none;
+}
+
+.linktree li {
+    margin: 0.35rem 0;
+}
+
+.linktree a {
+    display: inline-block;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding: 0.12rem 0.15rem;
+}
+
+.linktree .is-active,
+.linktree a:hover,
+.linktree a:focus-visible {
+    color: var(--accent-strong);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.35);
+}
+
+.linktree.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.panel-stack {
+    position: relative;
+    transition: height 0.35s ease;
+}
+
 .panel-stack > .contact-form {
-  transform: translateY(0.25rem);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(0.25rem);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
 }
 
 .panel-stack > .contact-form.is-visible {
-  transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    max-height: 60rem;
 }
 
-.panel-stack > .linktree.is-hidden {
-  pointer-events: none;
+.contact-form {
+    margin-top: 1rem;
+    padding: 1rem 0;
 }
 
-/* Scrollbox glow indicators (white-blue accent used for text-shadow) */
-:root {
-  --whiteblue-rgb: 224, 242, 254; /* used for glow */
-  --whiteblue-glow: rgba(var(--whiteblue-rgb), 0.16);
-  --whiteblue-glow-strong: rgba(var(--whiteblue-rgb), 0.28);
+.form-row {
+    margin: 0.7rem 0;
 }
 
-/* Apply to any container intended to show top/bottom scroll glows */
+input,
+select,
+textarea,
+button {
+    font: inherit;
+    color: var(--text);
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid rgba(224, 242, 254, 0.25);
+    border-radius: 0;
+    padding: 0.7rem 0.8rem;
+    width: 100%;
+    resize: vertical;
+}
+
+textarea {
+    min-height: 110px;
+}
+
+button,
+.form-send,
+.form-back {
+    background: rgba(15, 23, 42, 0.5);
+    width: auto;
+    padding: 0.7rem 1rem;
+    cursor: none !important;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.form-feedback {
+    min-height: 1.2rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.form-feedback.success {
+    color: #b7f3bf;
+}
+
+.form-feedback.error {
+    color: #f5b1b1;
+}
+
+.form-error {
+    display: block;
+    color: #f5b1b1;
+    font-size: 0.75rem;
+    min-height: 1rem;
+    margin-top: 0.25rem;
+}
+
+.sub-list {
+    margin-left: 1rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.subsection {
+    list-style: none;
+}
+
+.subsection-toggle {
+    font-weight: 600;
+}
+
+.sub-list { display: none; }
+.subsection.open > .sub-list,
+.subsection .sub-list.is-open {
+    display: block;
+}
+
+.content-scroll,
+.glossary-scroll,
 .scrollbox {
-  position: relative; /* establish positioning for pseudo elements */
+    position: relative;
 }
 
 .scrollbox::before,
 .scrollbox::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: clamp(0.8rem, 4vw, 2.5rem);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 240ms ease;
-  mix-blend-mode: screen; /* blend nicely over dark backgrounds */
-  z-index: 3;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: clamp(0.8rem, 4vw, 2.5rem);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 240ms ease;
+    mix-blend-mode: screen;
+    z-index: 3;
 }
 
-/* top glow */
 .scrollbox::before {
-  top: 0;
-  transform: translateY(-1px);
-  background: linear-gradient(to bottom, var(--whiteblue-glow-strong), rgba(var(--whiteblue-rgb), 0));
+    top: 0;
+    transform: translateY(-1px);
+    background: linear-gradient(to bottom, var(--whiteblue-glow-strong), rgba(var(--whiteblue-rgb), 0));
 }
 
-/* bottom glow */
 .scrollbox::after {
-  bottom: 0;
-  transform: translateY(1px);
-  background: linear-gradient(to top, var(--whiteblue-glow), rgba(var(--whiteblue-rgb), 0));
+    bottom: 0;
+    transform: translateY(1px);
+    background: linear-gradient(to top, var(--whiteblue-glow), rgba(var(--whiteblue-rgb), 0));
 }
 
-/* show glows when scrolled */
 .scrollbox.has-scroll-up::before,
 .scrollbox.has-scroll-down::after {
-  opacity: 1;
+    opacity: 1;
 }
 
-/* Slightly stronger glow on hover/focus for discoverability */
+@media (prefers-reduced-motion: reduce) {
+    .scrollbox::before,
+    .scrollbox::after,
+    .panel-stack > .contact-form,
+    .statement,
+    a {
+        transition: none;
+    }
+}
+
+/* Keep original site behavior without losing later fixes */
+@media (max-width: 640px) {
+    .container {
+        padding: 1.5rem 0.9rem;
+    }
+
+    .title {
+        line-height: 1.05;
+    }
+}
+
+/* Fix: ensure statement is not truncated and contact panel transitions */
+.statement {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.statement .read-more {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+.panel-stack > .contact-form {
+    transform: translateY(0.25rem);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.panel-stack > .contact-form.is-visible {
+    transform: translateY(0);
+}
+
+.panel-stack > .linktree.is-hidden {
+    pointer-events: none;
+}
+
+/* Scrollbox glow indicators (white-blue accent used for text-shadow) */
+:root {
+    --whiteblue-rgb: 224, 242, 254;
+    --whiteblue-glow: rgba(var(--whiteblue-rgb), 0.16);
+    --whiteblue-glow-strong: rgba(var(--whiteblue-rgb), 0.28);
+}
+
+.scrollbox {
+    position: relative;
+}
+
+.scrollbox::before,
+.scrollbox::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: clamp(0.8rem, 4vw, 2.5rem);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 240ms ease;
+    mix-blend-mode: screen;
+    z-index: 3;
+}
+
+.scrollbox::before {
+    top: 0;
+    transform: translateY(-1px);
+    background: linear-gradient(to bottom, var(--whiteblue-glow-strong), rgba(var(--whiteblue-rgb), 0));
+}
+
+.scrollbox::after {
+    bottom: 0;
+    transform: translateY(1px);
+    background: linear-gradient(to top, var(--whiteblue-glow), rgba(var(--whiteblue-rgb), 0));
+}
+
+.scrollbox.has-scroll-up::before,
+.scrollbox.has-scroll-down::after {
+    opacity: 1;
+}
+
 .scrollbox:focus-within.has-scroll-up::before,
 .scrollbox:hover.has-scroll-up::before {
-  opacity: 1;
-  transition-duration: 180ms;
-}
-.scrollbox:focus-within.has-scroll-down::after,
-.scrollbox:hover.has-scroll-down::after {
-  opacity: 1;
-  transition-duration: 180ms;
+    opacity: 1;
+    transition-duration: 180ms;
 }
 
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  .scrollbox::before,
-  .scrollbox::after {
-    transition: none;
-  }
+.scrollbox:focus-within.has-scroll-down::after,
+.scrollbox:hover.has-scroll-down::after {
+    opacity: 1;
+    transition-duration: 180ms;
 }
