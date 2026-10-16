@@ -1,4 +1,4 @@
-[original styles.css content preserved above]
+/* [original styles.css content preserved above] */
 
 /* Fix: ensure statement is not truncated and contact panel transitions */
 .statement {
@@ -25,4 +25,70 @@
 
 .panel-stack > .linktree.is-hidden {
   pointer-events: none;
+}
+
+/* Scrollbox glow indicators (white-blue accent used for text-shadow) */
+:root {
+  --whiteblue-rgb: 224, 242, 254; /* used for glow */
+  --whiteblue-glow: rgba(var(--whiteblue-rgb), 0.16);
+  --whiteblue-glow-strong: rgba(var(--whiteblue-rgb), 0.28);
+}
+
+/* Apply to any container intended to show top/bottom scroll glows */
+.scrollbox {
+  position: relative; /* establish positioning for pseudo elements */
+}
+
+.scrollbox::before,
+.scrollbox::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(0.8rem, 4vw, 2.5rem);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms ease;
+  mix-blend-mode: screen; /* blend nicely over dark backgrounds */
+  z-index: 3;
+}
+
+/* top glow */
+.scrollbox::before {
+  top: 0;
+  transform: translateY(-1px);
+  background: linear-gradient(to bottom, var(--whiteblue-glow-strong), rgba(var(--whiteblue-rgb), 0));
+}
+
+/* bottom glow */
+.scrollbox::after {
+  bottom: 0;
+  transform: translateY(1px);
+  background: linear-gradient(to top, var(--whiteblue-glow), rgba(var(--whiteblue-rgb), 0));
+}
+
+/* show glows when scrolled */
+.scrollbox.has-scroll-up::before,
+.scrollbox.has-scroll-down::after {
+  opacity: 1;
+}
+
+/* Slightly stronger glow on hover/focus for discoverability */
+.scrollbox:focus-within.has-scroll-up::before,
+.scrollbox:hover.has-scroll-up::before {
+  opacity: 1;
+  transition-duration: 180ms;
+}
+.scrollbox:focus-within.has-scroll-down::after,
+.scrollbox:hover.has-scroll-down::after {
+  opacity: 1;
+  transition-duration: 180ms;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .scrollbox::before,
+  .scrollbox::after {
+    transition: none;
+  }
 }
