@@ -1321,6 +1321,8 @@ function initCustomMediaControls() {
 // - Idempotent: won't run twice on the same UL.
 
 (function () {
+    // --- Replace the createStyle() and initLinktreeScrollGlows selector/wrapper logic with this ---
+
   function createStyle() {
     if (document.getElementById('linktree-scroll-glow-styles')) return;
     const style = document.createElement('style');
@@ -1335,7 +1337,8 @@ function initCustomMediaControls() {
         z-index: 1;
         mix-blend-mode: screen;
       }
-      .linktree-scroll-glow.visible { opacity: 1; }
+      /* lower the visible opacity so glows are more subtle */
+      .linktree-scroll-glow.visible { opacity: 0.6; }
       .linktree-scroll-glow.horizontal {
         top: 0;
         bottom: 0;
@@ -1346,24 +1349,23 @@ function initCustomMediaControls() {
         right: 0;
         height: 36px;
       }
+      /* softened gradient alpha (was 0.95 before) */
       .linktree-scroll-glow.left {
         left: 0;
-        background: linear-gradient(90deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+        background: linear-gradient(90deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
       }
       .linktree-scroll-glow.right {
         right: 0;
-        background: linear-gradient(270deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+        background: linear-gradient(270deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
       }
       .linktree-scroll-glow.top {
-        /* default top; might be overridden by JS to sit under the title element */
-        background: linear-gradient(180deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
-        z-index: 0; /* sit underneath the title cell (title should be z-index:1 or auto) */
+        background: linear-gradient(180deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
+        z-index: 0;
       }
       .linktree-scroll-glow.bottom {
         bottom: 0;
-        background: linear-gradient(0deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+        background: linear-gradient(0deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
       }
-      /* Ensure that title cells remain above the top glow */
       .linktree-scroll-container .title,
       .linktree-scroll-container .title-cell,
       .linktree-scroll-container .item-title {
@@ -1372,6 +1374,16 @@ function initCustomMediaControls() {
       }
     `;
     document.head.appendChild(style);
+  }
+
+  function initLinktreeScrollGlows() {
+    createStyle();
+    // Only target ULs that are direct children of an element with class `linktree-scroll-container`
+    // within a .linktree. This avoids matching ULs that are not inside the intended container.
+    const wrapSelector = '.linktree .linktree-scroll-container > ul, .linktree li.linktree-scroll-container > ul';
+    const uls = document.querySelectorAll(wrapSelector);
+    if (!uls || uls.length === 0) return;
+    uls.forEach(setupUL);
   }
 
   function ensureContainerPositioning(el) {
@@ -1491,12 +1503,14 @@ function initCustomMediaControls() {
     }
   }
 
-  function setupUL(ul) {
+ function setupUL(ul) {
     if (ul.dataset.linktreeScrollGlowInitialized) return;
     ul.dataset.linktreeScrollGlowInitialized = '1';
 
-    // Ensure container positioning so absolute glows position correctly.
-    const wrapper = ul.parentElement || ul;
+    // Prefer the nearest .linktree-scroll-container as the wrapper so glows attach to the container,
+    // not directly to an <a> or a different ancestor.
+    const wrapper = ul.closest('.linktree-scroll-container') || ul.parentElement || ul;
+
     ensureContainerPositioning(wrapper);
 
     const glows = addGlowElements(wrapper);
