@@ -1459,50 +1459,66 @@ function createStyle() {
     }
     return null;
   }
-// --- Replace the existing positionTopGlow(wrapper, ul, glows) implementation with this ---
-function positionTopGlow(wrapper, ul, glows) {
-  const title = findTitleElement(wrapper, ul);
-  const wrapperRect = wrapper.getBoundingClientRect();
 
-  if (!title) {
-    // default to the wrapper top
-    glows.top.style.top = '0px';
-    return;
+    // Replace the existing positionTopGlow(wrapper, ul, glows) implementation with this:
+function positionTopGlow(wrapper, ul, glows) {
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const ulRect = ul.getBoundingClientRect();
+
+  // Candidate selectors used elsewhere in this module
+  const titleSelectors = ['.title', '.title-cell', '.item-title', '.linktree-title', '.section-title', '.term-cell'];
+
+  // 1) Prefer a title element that is outside the UL (so nested title <li> inside the UL is ignored)
+  let titleOutside = null;
+  for (const sel of titleSelectors) {
+    const candidates = wrapper.querySelectorAll(sel);
+    for (const cand of candidates) {
+      if (!ul.contains(cand)) {
+        const candRect = cand.getBoundingClientRect();
+        // ensure the candidate is visually above or near the UL
+        if (candRect.bottom <= ulRect.top + 2 || Math.abs(candRect.top - ulRect.top) < 40) {
+          titleOutside = cand;
+          break;
+        }
+      }
+    }
+    if (titleOutside) break;
   }
 
-  // If the title element is contained inside the UL itself (e.g. a title <li>),
-  // prefer to start the top glow below the next visible sibling (the first "real" item).
-  try {
-    if (ul.contains(title)) {
-      let next = title.nextElementSibling;
-      // skip over invisible / script / style / comment siblings
-      while (next && (next.nodeType !== 1 || getComputedStyle(next).display === 'none')) {
-        next = next.nextElementSibling;
-      }
-      if (next) {
-        const nextRect = next.getBoundingClientRect();
-        const topOffset = Math.max(0, nextRect.top - wrapperRect.top);
-        glows.top.style.top = `${topOffset}px`;
-        // keep glow width full; ensure stacking underneath title
-        glows.top.style.left = '0';
-        glows.top.style.right = '0';
-        glows.top.style.zIndex = '0';
-        return;
-      }
-      // if there is no next sibling, fall back to placing just below the title
-    }
-
-    // Default behavior: place top glow immediately under the title's bottom
-    const titleRect = title.getBoundingClientRect();
-    const topOffset = Math.max(0, titleRect.bottom - wrapperRect.top);
+  if (titleOutside) {
+    const topOffset = Math.max(0, titleOutside.getBoundingClientRect().bottom - wrapperRect.top);
     glows.top.style.top = `${topOffset}px`;
     glows.top.style.left = '0';
     glows.top.style.right = '0';
     glows.top.style.zIndex = '0';
-  } catch (e) {
-    // On any measurement error, fall back gracefully
-    glows.top.style.top = '0px';
+    return;
   }
+
+  // 2) No outside title found — find the first visible, non-title child inside the UL
+  const titleSelectorList = titleSelectors.join(',');
+  const children = Array.from(ul.children).filter(ch => ch.nodeType === 1 && isElementVisible(ch));
+  let firstNonTitle = children.find(ch => !ch.matches(titleSelectorList));
+
+  // If none matches the "non-title" heuristic, fall back to the first visible child
+  if (!firstNonTitle && children.length > 0) {
+    firstNonTitle = children[0];
+  }
+
+  if (firstNonTitle) {
+    // Start the glow at the top of the first real item (slightly nudged up for visual spacing)
+    const topOffset = Math.max(0, firstNonTitle.getBoundingClientRect().top - wrapperRect.top - 2);
+    glows.top.style.top = `${topOffset}px`;
+    glows.top.style.left = '0';
+    glows.top.style.right = '0';
+    glows.top.style.zIndex = '0';
+    return;
+  }
+
+  // 3) Fallback: place at wrapper top
+  glows.top.style.top = '0px';
+  glows.top.style.left = '0';
+  glows.top.style.right = '0';
+  glows.top.style.zIndex = '0';
 }
 
   function updateGlowsForScrollable(el, glows) {
