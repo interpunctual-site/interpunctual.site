@@ -1326,52 +1326,50 @@ function initCustomMediaControls() {
     const style = document.createElement('style');
     style.id = 'linktree-scroll-glow-styles';
     style.innerHTML = `
-      /* CSS inserted by createStyle() — updated opacity and feathering */
-.linktree-scroll-glow {
-  position: absolute;
-  pointer-events: none;
-  transition: opacity 220ms ease, top 220ms ease;
-  opacity: 0;
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-
-/* lower the visible opacity to ~20% */
-.linktree-scroll-glow.visible { opacity: 0.2; }
-
-/* horizontal / vertical sizing left as before but gradients are feathered */
-.linktree-scroll-glow.left {
-  left: 0;
-  background: linear-gradient(90deg,
-    rgba(210,230,255,0.20) 0%,
-    rgba(210,230,255,0.06) 40%,
-    rgba(210,230,255,0) 100%);
-}
-
-.linktree-scroll-glow.right {
-  right: 0;
-  background: linear-gradient(270deg,
-    rgba(210,230,255,0.20) 0%,
-    rgba(210,230,255,0.06) 40%,
-    rgba(210,230,255,0) 100%);
-}
-
-.linktree-scroll-glow.top {
-  /* default top; JS will set top/left/width to sit exactly inside the UL */
-  background: linear-gradient(180deg,
-    rgba(210,230,255,0.20) 0%,
-    rgba(210,230,255,0.06) 60%,
-    rgba(210,230,255,0) 100%);
-  z-index: 0;
-}
-
-.linktree-scroll-glow.bottom {
-  bottom: 0;
-  background: linear-gradient(0deg,
-    rgba(210,230,255,0.20) 0%,
-    rgba(210,230,255,0.06) 60%,
-    rgba(210,230,255,0) 100%);
-}
+      .linktree-scroll-container { position: relative; }
+      .linktree-scroll-glow {
+        position: absolute;
+        pointer-events: none;
+        transition: opacity 220ms ease, top 220ms ease;
+        opacity: 0;
+        z-index: 1;
+        mix-blend-mode: screen;
+      }
+      .linktree-scroll-glow.visible { opacity: 1; }
+      .linktree-scroll-glow.horizontal {
+        top: 0;
+        bottom: 0;
+        width: 36px;
+      }
+      .linktree-scroll-glow.vertical {
+        left: 0;
+        right: 0;
+        height: 36px;
+      }
+      .linktree-scroll-glow.left {
+        left: 0;
+        background: linear-gradient(90deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+      }
+      .linktree-scroll-glow.right {
+        right: 0;
+        background: linear-gradient(270deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+      }
+      .linktree-scroll-glow.top {
+        /* default top; might be overridden by JS to sit under the title element */
+        background: linear-gradient(180deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+        z-index: 0; /* sit underneath the title cell (title should be z-index:1 or auto) */
+      }
+      .linktree-scroll-glow.bottom {
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(210,230,255,0.95), rgba(210,230,255,0));
+      }
+      /* Ensure that title cells remain above the top glow */
+      .linktree-scroll-container .title,
+      .linktree-scroll-container .title-cell,
+      .linktree-scroll-container .item-title {
+        position: relative;
+        z-index: 2;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -1382,27 +1380,6 @@ function initCustomMediaControls() {
       el.classList.add('linktree-scroll-container');
     }
   }
-  
-  /* JS: positionTopGlow now positions the top glow inside the UL,
-   using the UL's top/left/width so title cells are excluded. */
-function positionTopGlow(wrapper, ul, glows) {
-  // compute UL position relative to wrapper so glow sits inside the list
-  const ulRect = ul.getBoundingClientRect();
-  const wrapperRect = wrapper.getBoundingClientRect();
-
-  // top offset inside wrapper — ensures glow begins at the UL's top edge
-  const topOffset = Math.max(0, ulRect.top - wrapperRect.top);
-  glows.top.style.top = `${topOffset}px`;
-
-  // align the top glow horizontally to the UL so it doesn't span the title area
-  const leftOffset = Math.max(0, ulRect.left - wrapperRect.left);
-  glows.top.style.left = `${leftOffset}px`;
-  glows.top.style.width = `${ul.clientWidth}px`;
-
-  // set a modest height for the top glow and ensure it's underneath titles
-  glows.top.style.height = '24px';
-  glows.top.style.zIndex = '0';
-}
 
   function addGlowElements(wrapper) {
     const directions = ['left', 'right', 'top', 'bottom'];
