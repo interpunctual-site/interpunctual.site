@@ -1,4 +1,4 @@
-const words = ["nibiru fæ", "gb-073", "g8", "li milan", "erebus nyx", "polexia al-twal", "wotan al-kitab", "zøe ha-razim", "stella nazar", "tris kemet", "penny lane", "surya samhita"];
+const words = ["azræl leviathan", "nibiru fæ", "gb-073", "g8", "li milan", "erebus nyx", "polexia al-twal", "wotan al-kitab", "zøe ha-razim", "stella nazar", "tris kemet", "penny lane", "surya samhita"];
 const wordElement = document.getElementById("word");
 
 // Custom cursor
