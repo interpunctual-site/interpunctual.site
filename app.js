@@ -1323,58 +1323,68 @@ function initCustomMediaControls() {
 (function () {
     // --- Replace the createStyle() and initLinktreeScrollGlows selector/wrapper logic with this ---
 
-  function createStyle() {
-    if (document.getElementById('linktree-scroll-glow-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'linktree-scroll-glow-styles';
-    style.innerHTML = `
-      .linktree-scroll-container { position: relative; }
-      .linktree-scroll-glow {
-        position: absolute;
-        pointer-events: none;
-        transition: opacity 220ms ease, top 220ms ease;
-        opacity: 0;
-        z-index: 1;
-        mix-blend-mode: screen;
-      }
-      /* lower the visible opacity so glows are more subtle */
-      .linktree-scroll-glow.visible { opacity: 0.6; }
-      .linktree-scroll-glow.horizontal {
-        top: 0;
-        bottom: 0;
-        width: 36px;
-      }
-      .linktree-scroll-glow.vertical {
-        left: 0;
-        right: 0;
-        height: 36px;
-      }
-      /* softened gradient alpha (was 0.95 before) */
-      .linktree-scroll-glow.left {
-        left: 0;
-        background: linear-gradient(90deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-      }
-      .linktree-scroll-glow.right {
-        right: 0;
-        background: linear-gradient(270deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-      }
-      .linktree-scroll-glow.top {
-        background: linear-gradient(180deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-        z-index: 0;
-      }
-      .linktree-scroll-glow.bottom {
-        bottom: 0;
-        background: linear-gradient(0deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-      }
-      .linktree-scroll-container .title,
-      .linktree-scroll-container .title-cell,
-      .linktree-scroll-container .item-title {
-        position: relative;
-        z-index: 2;
-      }
-    `;
-    document.head.appendChild(style);
-  }
+ // --- Replace the createStyle() body with this updated CSS ---
+function createStyle() {
+  if (document.getElementById('linktree-scroll-glow-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'linktree-scroll-glow-styles';
+  style.innerHTML = `
+    .linktree-scroll-container { position: relative; }
+    .linktree-scroll-glow {
+      position: absolute;
+      pointer-events: none;
+      transition: opacity 220ms ease, top 220ms ease;
+      opacity: 0;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+    /* lower the visible opacity so glows are more subtle */
+    .linktree-scroll-glow.visible { opacity: 0.45; }
+    /* wider horizontal glow to allow more feathering */
+    .linktree-scroll-glow.horizontal {
+      top: 0;
+      bottom: 0;
+      width: 72px; /* increased from 36px */
+    }
+    .linktree-scroll-glow.vertical {
+      left: 0;
+      right: 0;
+      height: 36px;
+    }
+    /* much more gradual / feathered gradients on left/right */
+    .linktree-scroll-glow.left {
+      left: 0;
+      background: linear-gradient(90deg,
+        rgba(210,230,255,0.6) 0%,
+        rgba(210,230,255,0.35) 30%,
+        rgba(210,230,255,0.12) 60%,
+        rgba(210,230,255,0) 100%);
+    }
+    .linktree-scroll-glow.right {
+      right: 0;
+      background: linear-gradient(270deg,
+        rgba(210,230,255,0.6) 0%,
+        rgba(210,230,255,0.35) 30%,
+        rgba(210,230,255,0.12) 60%,
+        rgba(210,230,255,0) 100%);
+    }
+    .linktree-scroll-glow.top {
+      background: linear-gradient(180deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
+      z-index: 0;
+    }
+    .linktree-scroll-glow.bottom {
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
+    }
+    .linktree-scroll-container .title,
+    .linktree-scroll-container .title-cell,
+    .linktree-scroll-container .item-title {
+      position: relative;
+      z-index: 2;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
   function initLinktreeScrollGlows() {
     createStyle();
@@ -1449,25 +1459,51 @@ function initCustomMediaControls() {
     }
     return null;
   }
+// --- Replace the existing positionTopGlow(wrapper, ul, glows) implementation with this ---
+function positionTopGlow(wrapper, ul, glows) {
+  const title = findTitleElement(wrapper, ul);
+  const wrapperRect = wrapper.getBoundingClientRect();
 
-  function positionTopGlow(wrapper, ul, glows) {
-    const title = findTitleElement(wrapper, ul);
-    if (!title) {
-      // default to the wrapper top
-      glows.top.style.top = '0px';
-      return;
+  if (!title) {
+    // default to the wrapper top
+    glows.top.style.top = '0px';
+    return;
+  }
+
+  // If the title element is contained inside the UL itself (e.g. a title <li>),
+  // prefer to start the top glow below the next visible sibling (the first "real" item).
+  try {
+    if (ul.contains(title)) {
+      let next = title.nextElementSibling;
+      // skip over invisible / script / style / comment siblings
+      while (next && (next.nodeType !== 1 || getComputedStyle(next).display === 'none')) {
+        next = next.nextElementSibling;
+      }
+      if (next) {
+        const nextRect = next.getBoundingClientRect();
+        const topOffset = Math.max(0, nextRect.top - wrapperRect.top);
+        glows.top.style.top = `${topOffset}px`;
+        // keep glow width full; ensure stacking underneath title
+        glows.top.style.left = '0';
+        glows.top.style.right = '0';
+        glows.top.style.zIndex = '0';
+        return;
+      }
+      // if there is no next sibling, fall back to placing just below the title
     }
-    const wrapperRect = wrapper.getBoundingClientRect();
+
+    // Default behavior: place top glow immediately under the title's bottom
     const titleRect = title.getBoundingClientRect();
-    // place the top glow so it starts immediately under the title's bottom within the wrapper
     const topOffset = Math.max(0, titleRect.bottom - wrapperRect.top);
     glows.top.style.top = `${topOffset}px`;
-    // make the top glow slightly shorter than full width to avoid overlap with title edges
     glows.top.style.left = '0';
     glows.top.style.right = '0';
-    // ensure stacking so glow is underneath title (title has z-index:2 in CSS above)
     glows.top.style.zIndex = '0';
+  } catch (e) {
+    // On any measurement error, fall back gracefully
+    glows.top.style.top = '0px';
   }
+}
 
   function updateGlowsForScrollable(el, glows) {
     // Only show glows when this specific UL is open/visible
