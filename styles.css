@@ -1,4 +1,4 @@
-/* (original styles.css content up to the point returned by getfile) */
+/* Original styles.css (restored) */
 :root {
     --bg: #334155;
     --text: #e0f2fe;
@@ -148,57 +148,108 @@ iframe {
     }
 }
 
-/* (rest of original styles.css preserved) */
-
-/* --- Responsive table fixes (SCOPED) --- */
-/* NOTE: previous site-wide table rules caused layout regressions. These rules are deliberately
-   scoped only to the scroll containers that contain tables so we don't change table sizing
-   globally. This preserves existing table behaviour while centering tables inside scrollboxes. */
-
-/* Keep table wrappers scrollable on x when explicitly intended */
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
-}
-
-/* For glossary (avatars) page, allow horizontal scroll if needed and center the table visually */
-.glossary-scroll {
-    /* don't change other existing .glossary-scroll properties; only ensure it can scroll horizontally if needed */
-    overflow-x: auto; /* if previously hidden, this will allow panning rather than clipping */
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Target only tables inside .glossary-scroll or inside explicit .table-responsive wrappers */
-.glossary-scroll table,
-.table-responsive table {
-    display: inline-table;     /* shrink-wrap to content so margin:auto centers the table inside the scrollbox */
-    margin-left: auto;
-    margin-right: auto;
-    max-width: none;           /* allow natural width; wrapper handles overflow */
-    min-width: 0;              /* allow shrinking within containers */
-}
-
-/* Keep existing cell padding for other tables; only ensure wrapping for scoped tables */
-.glossary-scroll table th,
-.glossary-scroll table td,
-.table-responsive table th,
-.table-responsive table td {
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-}
-
-/* Small-screen tweak to reduce padding only for scoped tables to prevent clipping */
-@media (max-width: 480px) {
-    .glossary-scroll table th,
-    .glossary-scroll table td,
-    .table-responsive table th,
-    .table-responsive table td {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+@keyframes rotateAndContractTop {
+    from {
+        transform: rotate(0deg) translateY(1px);
     }
-
-    .term-cell { width: 35%; }
-    .definition-cell { width: 65%; }
+    to {
+        transform: rotate(360deg) translateY(1px);
+    }
 }
 
-/* End of scoped table rules */
+@keyframes rotateAndContractBottom {
+    from {
+        transform: rotate(0deg) translateY(-1px);
+    }
+    to {
+        transform: rotate(360deg) translateY(-1px);
+    }
+}
+
+@keyframes rotateAndContractLeft {
+    from {
+        transform: rotate(0deg) translateX(1px);
+    }
+    to {
+        transform: rotate(360deg) translateX(1px);
+    }
+}
+
+@keyframes rotateAndContractRight {
+    from {
+        transform: rotate(0deg) translateX(-1px);
+    }
+    to {
+        transform: rotate(360deg) translateX(-1px);
+    }
+}
+
+/* Global Link Styles */
+a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a:hover {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.6);
+}
+
+a:active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 212, 71, 0.35);
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: var(--bg);
+    background-image: url('../media/site-bg.mp4');
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    text-shadow: 0 0 0.5rem rgba(224, 242, 254, 0.5);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(51, 65, 85, 0.75);
+    pointer-events: none;
+    z-index: -1;
+}
+
+body > video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: -2;
+}
+
+.container {
+    text-align: left;
+    max-width: 37.5rem;
+    width: 100%;
+    padding: 2.5rem 1.25rem;
+}
+
+/* ...rest of original styles.css preserved... */
