@@ -1321,79 +1321,50 @@ function initCustomMediaControls() {
 // - Idempotent: won't run twice on the same UL.
 
 (function () {
-    // --- Replace the createStyle() and initLinktreeScrollGlows selector/wrapper logic with this ---
-
- // --- Replace the createStyle() body with this updated CSS ---
-function createStyle() {
-  if (document.getElementById('linktree-scroll-glow-styles')) return;
-  const style = document.createElement('style');
-  style.id = 'linktree-scroll-glow-styles';
-  style.innerHTML = `
-    .linktree-scroll-container { position: relative; }
-    .linktree-scroll-glow {
-      position: absolute;
-      pointer-events: none;
-      transition: opacity 220ms ease, top 220ms ease;
-      opacity: 0;
-      z-index: 1;
-      mix-blend-mode: screen;
-    }
-    /* lower the visible opacity so glows are more subtle */
-    .linktree-scroll-glow.visible { opacity: 0.45; }
-    /* wider horizontal glow to allow more feathering */
-    .linktree-scroll-glow.horizontal {
-      top: 0;
-      bottom: 0;
-      width: 72px; /* increased from 36px */
-    }
-    .linktree-scroll-glow.vertical {
-      left: 0;
-      right: 0;
-      height: 36px;
-    }
-    /* much more gradual / feathered gradients on left/right */
-    .linktree-scroll-glow.left {
-      left: 0;
-      background: linear-gradient(90deg,
-        rgba(210,230,255,0.6) 0%,
-        rgba(210,230,255,0.35) 30%,
-        rgba(210,230,255,0.12) 60%,
-        rgba(210,230,255,0) 100%);
-    }
-    .linktree-scroll-glow.right {
-      right: 0;
-      background: linear-gradient(270deg,
-        rgba(210,230,255,0.6) 0%,
-        rgba(210,230,255,0.35) 30%,
-        rgba(210,230,255,0.12) 60%,
-        rgba(210,230,255,0) 100%);
-    }
-    .linktree-scroll-glow.top {
-      background: linear-gradient(180deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-      z-index: 0;
-    }
-    .linktree-scroll-glow.bottom {
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(210,230,255,0.6), rgba(210,230,255,0));
-    }
-    .linktree-scroll-container .title,
-    .linktree-scroll-container .title-cell,
-    .linktree-scroll-container .item-title {
-      position: relative;
-      z-index: 2;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-  function initLinktreeScrollGlows() {
-    createStyle();
-    // Only target ULs that are direct children of an element with class `linktree-scroll-container`
-    // within a .linktree. This avoids matching ULs that are not inside the intended container.
-    const wrapSelector = '.linktree .linktree-scroll-container > ul, .linktree li.linktree-scroll-container > ul';
-    const uls = document.querySelectorAll(wrapSelector);
-    if (!uls || uls.length === 0) return;
-    uls.forEach(setupUL);
+  function createStyle() {
+    if (document.getElementById('linktree-scroll-glow-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'linktree-scroll-glow-styles';
+    style.innerHTML = `
+      .linktree-scroll-container { position: relative; }
+      .linktree-scroll-glow {
+        position: absolute;
+        pointer-events: none;
+        transition: opacity 220ms ease;
+        opacity: 0;
+        z-index: 2;
+        mix-blend-mode: screen;
+      }
+      .linktree-scroll-glow.visible { opacity: 1; }
+      .linktree-scroll-glow.horizontal {
+        top: 0;
+        bottom: 0;
+        width: 36px;
+      }
+      .linktree-scroll-glow.vertical {
+        left: 0;
+        right: 0;
+        height: 36px;
+      }
+      .linktree-scroll-glow.left {
+        left: 0;
+        background: linear-gradient(90deg, rgba(0,0,0,0.28), rgba(0,0,0,0));
+      }
+      .linktree-scroll-glow.right {
+        right: 0;
+        background: linear-gradient(270deg, rgba(0,0,0,0.28), rgba(0,0,0,0));
+      }
+      .linktree-scroll-glow.top {
+        top: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0));
+      }
+      .linktree-scroll-glow.bottom {
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(0,0,0,0.28), rgba(0,0,0,0));
+      }
+      /* Optional: tweak for dark/light themes by using CSS variables on root */
+    `;
+    document.head.appendChild(style);
   }
 
   function ensureContainerPositioning(el) {
@@ -1410,124 +1381,13 @@ function createStyle() {
       const g = document.createElement('div');
       g.className = `linktree-scroll-glow ${dir} ${ (dir==='left'||dir==='right') ? 'horizontal' : 'vertical' }`;
       g.setAttribute('data-glow-dir', dir);
-      // make sure default inline values are set so JS can override
-      if (dir === 'top') {
-        g.style.top = '0px';
-        g.style.left = '0';
-        g.style.right = '0';
-        g.style.height = '36px';
-      }
       wrapper.appendChild(g);
       glows[dir] = g;
     });
     return glows;
   }
 
-  function isElementVisible(el) {
-    if (!el) return false;
-    // offsetParent guards against display:none; also check clientHeight
-    if (el.offsetParent === null && getComputedStyle(el).position !== 'fixed') return false;
-    if (el.clientWidth === 0 && el.clientHeight === 0) return false;
-    if (getComputedStyle(el).visibility === 'hidden') return false;
-    return true;
-  }
-
-  function isULOpen(ul) {
-    // If the UL is inside a collapsible subsection, only show glows when that subsection is open.
-    const subsection = ul.closest('.subsection');
-    if (subsection) {
-      return subsection.classList.contains('open') && isElementVisible(ul);
-    }
-    // otherwise rely on visibility (e.g., top-level menu might be present/hidden)
-    return isElementVisible(ul);
-  }
-
-  function findTitleElement(wrapper, ul) {
-    // look for a title or item element that sits above the UL in the same wrapper
-    const titleSelectors = ['.title', '.title-cell', '.item-title', '.linktree-title', '.section-title', '.term-cell'];
-    for (const sel of titleSelectors) {
-      // prefer an element that is before the UL in DOM order
-      const candidate = wrapper.querySelector(sel);
-      if (candidate) {
-        // ensure it's actually visually above the UL
-        const candRect = candidate.getBoundingClientRect();
-        const ulRect = ul.getBoundingClientRect();
-        if (candRect.bottom <= ulRect.top + 2 || Math.abs(candRect.top - ulRect.top) < 40) {
-          return candidate;
-        }
-      }
-    }
-    return null;
-  }
-
-    // Replace the existing positionTopGlow(wrapper, ul, glows) implementation with this:
-function positionTopGlow(wrapper, ul, glows) {
-  const wrapperRect = wrapper.getBoundingClientRect();
-  const ulRect = ul.getBoundingClientRect();
-
-  // Candidate selectors used elsewhere in this module
-  const titleSelectors = ['.title', '.title-cell', '.item-title', '.linktree-title', '.section-title', '.term-cell'];
-
-  // 1) Prefer a title element that is outside the UL (so nested title <li> inside the UL is ignored)
-  let titleOutside = null;
-  for (const sel of titleSelectors) {
-    const candidates = wrapper.querySelectorAll(sel);
-    for (const cand of candidates) {
-      if (!ul.contains(cand)) {
-        const candRect = cand.getBoundingClientRect();
-        // ensure the candidate is visually above or near the UL
-        if (candRect.bottom <= ulRect.top + 2 || Math.abs(candRect.top - ulRect.top) < 40) {
-          titleOutside = cand;
-          break;
-        }
-      }
-    }
-    if (titleOutside) break;
-  }
-
-  if (titleOutside) {
-    const topOffset = Math.max(0, titleOutside.getBoundingClientRect().bottom - wrapperRect.top);
-    glows.top.style.top = `${topOffset}px`;
-    glows.top.style.left = '0';
-    glows.top.style.right = '0';
-    glows.top.style.zIndex = '0';
-    return;
-  }
-
-  // 2) No outside title found — find the first visible, non-title child inside the UL
-  const titleSelectorList = titleSelectors.join(',');
-  const children = Array.from(ul.children).filter(ch => ch.nodeType === 1 && isElementVisible(ch));
-  let firstNonTitle = children.find(ch => !ch.matches(titleSelectorList));
-
-  // If none matches the "non-title" heuristic, fall back to the first visible child
-  if (!firstNonTitle && children.length > 0) {
-    firstNonTitle = children[0];
-  }
-
-  if (firstNonTitle) {
-    // Start the glow at the top of the first real item (slightly nudged up for visual spacing)
-    const topOffset = Math.max(0, firstNonTitle.getBoundingClientRect().top - wrapperRect.top - 2);
-    glows.top.style.top = `${topOffset}px`;
-    glows.top.style.left = '0';
-    glows.top.style.right = '0';
-    glows.top.style.zIndex = '0';
-    return;
-  }
-
-  // 3) Fallback: place at wrapper top
-  glows.top.style.top = '0px';
-  glows.top.style.left = '0';
-  glows.top.style.right = '0';
-  glows.top.style.zIndex = '0';
-}
-
   function updateGlowsForScrollable(el, glows) {
-    // Only show glows when this specific UL is open/visible
-    if (!isULOpen(el)) {
-      Object.values(glows).forEach(g => g.classList.remove('visible'));
-      return;
-    }
-
     const scrollLeft = el.scrollLeft;
     const maxScrollLeft = el.scrollWidth - el.clientWidth;
     const scrollTop = el.scrollTop;
@@ -1555,24 +1415,20 @@ function positionTopGlow(wrapper, ul, glows) {
     }
   }
 
- function setupUL(ul) {
+  function setupUL(ul) {
+          // Only initialize for ULs that belong to a .sub-list
+    if (!ul.closest('.sub-list')) return;
+
     if (ul.dataset.linktreeScrollGlowInitialized) return;
     ul.dataset.linktreeScrollGlowInitialized = '1';
 
-    // Prefer the nearest .linktree-scroll-container as the wrapper so glows attach to the container,
-    // not directly to an <a> or a different ancestor.
-    const wrapper = ul.closest('.linktree-scroll-container') || ul.parentElement || ul;
-
+    // Ensure container positioning so absolute glows position correctly.
+    const wrapper = ul.parentElement || ul;
     ensureContainerPositioning(wrapper);
 
     const glows = addGlowElements(wrapper);
 
-    // Initial positioning for top glow and initial update
-    try {
-      positionTopGlow(wrapper, ul, glows);
-    } catch (e) {
-      // ignore
-    }
+    // Initial update
     updateGlowsForScrollable(ul, glows);
 
     // Scroll listener
@@ -1582,39 +1438,17 @@ function positionTopGlow(wrapper, ul, glows) {
     // Resize observer to handle content/size changes
     let resizeObserver;
     try {
-      resizeObserver = new ResizeObserver(() => {
-        positionTopGlow(wrapper, ul, glows);
-        updateGlowsForScrollable(ul, glows);
-      });
+      resizeObserver = new ResizeObserver(() => updateGlowsForScrollable(ul, glows));
       resizeObserver.observe(ul);
       resizeObserver.observe(wrapper);
-      // also observe the wrapper's title if present
-      const title = findTitleElement(wrapper, ul);
-      if (title) resizeObserver.observe(title);
     } catch (e) {
       // Fallback: window resize
-      window.addEventListener('resize', () => {
-        positionTopGlow(wrapper, ul, glows);
-        updateGlowsForScrollable(ul, glows);
-      }, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
     }
 
     // Mutation observer: if children change (e.g., links added), re-check scroll
-    const mo = new MutationObserver(() => {
-      positionTopGlow(wrapper, ul, glows);
-      updateGlowsForScrollable(ul, glows);
-    });
+    const mo = new MutationObserver(() => updateGlowsForScrollable(ul, glows));
     mo.observe(ul, { childList: true, subtree: true });
-
-    // Observe ancestor .subsection class changes so glows only appear when open
-    const subsection = ul.closest('.subsection');
-    if (subsection) {
-      const subMo = new MutationObserver(() => {
-        positionTopGlow(wrapper, ul, glows);
-        updateGlowsForScrollable(ul, glows);
-      });
-      subMo.observe(subsection, { attributes: true, attributeFilter: ['class'] });
-    }
 
     // Save refs to clean up later (if needed)
     ul._linktreeScrollGlow = { onScroll, resizeObserver, mutationObserver: mo, glows };
@@ -1622,7 +1456,7 @@ function positionTopGlow(wrapper, ul, glows) {
 
   function initLinktreeScrollGlows() {
     createStyle();
-    const wrapSelector = '.linktree ul, .linktree > ul';
+    const wrapSelector = '.linktree .sub-list > ul, .linktree li.sub-list > ul';
     const uls = document.querySelectorAll(wrapSelector);
     if (!uls || uls.length === 0) return;
     uls.forEach(setupUL);
