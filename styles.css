@@ -150,53 +150,55 @@ iframe {
 
 /* (rest of original styles.css preserved) */
 
-/* --- Responsive table fixes applied site-wide --- */
+/* --- Responsive table fixes (SCOPED) --- */
+/* NOTE: previous site-wide table rules caused layout regressions. These rules are deliberately
+   scoped only to the scroll containers that contain tables so we don't change table sizing
+   globally. This preserves existing table behaviour while centering tables inside scrollboxes. */
 
-/* Allow horizontal scrolling for any table wrapper and make sure tables can't be clipped */
-.table-responsive,
-.content-scroll,
-.glossary-scroll {
+/* Keep table wrappers scrollable on x when explicitly intended */
+.table-responsive {
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
 }
 
-/* If .table-responsive wrapper exists, let it scroll horizontally */
-.table-responsive {
-    overflow-x: auto;
+/* For glossary (avatars) page, allow horizontal scroll if needed and center the table visually */
+.glossary-scroll {
+    /* don't change other existing .glossary-scroll properties; only ensure it can scroll horizontally if needed */
+    overflow-x: auto; /* if previously hidden, this will allow panning rather than clipping */
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Apply to all tables: keep them constrained and centered */
-table {
-    max-width: 100%;
-    width: 100%;
+/* Target only tables inside .glossary-scroll or inside explicit .table-responsive wrappers */
+.glossary-scroll table,
+.table-responsive table {
+    display: inline-table;     /* shrink-wrap to content so margin:auto centers the table inside the scrollbox */
     margin-left: auto;
     margin-right: auto;
-    table-layout: auto; /* let columns size naturally but respect width */
-    min-width: 0; /* allow cells to shrink inside overflow containers */
-    border-collapse: collapse;
+    max-width: none;           /* allow natural width; wrapper handles overflow */
+    min-width: 0;              /* allow shrinking within containers */
 }
 
-/* Ensure table cells can wrap and won't force overflow by long words */
-table th,
-table td {
+/* Keep existing cell padding for other tables; only ensure wrapping for scoped tables */
+.glossary-scroll table th,
+.glossary-scroll table td,
+.table-responsive table th,
+.table-responsive table td {
     word-wrap: break-word;
     overflow-wrap: anywhere;
-    padding-left: 0.9375rem; /* match existing glossary table padding baseline */
-    padding-right: 0.9375rem;
 }
 
-/* Reduce horizontal padding on very small viewports */
+/* Small-screen tweak to reduce padding only for scoped tables to prevent clipping */
 @media (max-width: 480px) {
-    table th,
-    table td {
+    .glossary-scroll table th,
+    .glossary-scroll table td,
+    .table-responsive table th,
+    .table-responsive table td {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
-}
 
-/* Specific small-screen tweaks for known table classes to keep layout balanced */
-@media (max-width: 480px) {
     .term-cell { width: 35%; }
     .definition-cell { width: 65%; }
 }
 
-/* End of table rules */
+/* End of scoped table rules */
