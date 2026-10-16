@@ -2994,3 +2994,52 @@ blockquote::after {
     grid-row: 2;
     aspect-ratio: 3 / 4;
 }
+/* Make glossary/table responsive: fill container, wrap long text, allow scroll */
+.glossary-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  padding-bottom: 0.5rem;
+}
+
+.glossary-table,
+.container table,
+table.glossary-table,
+table.ingredient-table,
+table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed; /* distribute columns within container width */
+  border-collapse: collapse;
+}
+
+.glossary-table th,
+.glossary-table td,
+.container table th,
+.container table td,
+.ingredient-table th,
+.ingredient-table td {
+  white-space: normal;      /* allow wrapping */
+  word-break: break-word;   /* break long words/URLs */
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Preferential column widths (adjust percentages to taste) */
+.glossary-table td.term-cell,
+.glossary-table th:nth-child(1),
+.container table td.term-cell { width: 28%; }
+
+.glossary-table td.definition-cell,
+.glossary-table th:nth-child(2) { width: 46%; }
+
+.glossary-table td:last-child,
+.glossary-table th:nth-child(3) { width: 26%; }
+
+/* Tighter layout on very small screens */
+@media (max-width: 420px) {
+  .container { padding-left: 1rem; padding-right: 1rem; }
+  .glossary-table td.term-cell { width: 35%; }
+  .glossary-table td.definition-cell { width: 45%; }
+  .glossary-table td:last-child { width: 20%; }
+}
