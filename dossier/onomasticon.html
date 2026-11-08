@@ -10,6 +10,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" type="image/x-icon" href="../media/interpunct-favicon.ico">
+    <style>
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-responsive .glossary-table {
+            margin-inline: auto;
+        }
+
+        @media (max-width: 640px) {
+            .table-responsive .glossary-table {
+                min-width: 640px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -20,15 +37,16 @@
         <div class="glossary-scroll">
             <div class="scrollbox-section">
                 <h3 class="scrollbox-section-title" style="text-align: center; margin-bottom: 0.6rem;">onomasticon</h3>
-                <table class="glossary-table">
-                    <thead>
-                        <tr>
-                            <th>avatar</th>
-                            <th>etymology</th>
-                            <th>work(s)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table class="glossary-table">
+                        <thead>
+                            <tr>
+                                <th>avatar</th>
+                                <th>etymology</th>
+                                <th>work(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td class="term-cell">azræl leviathan</td>
                             <td class="definition-cell">0. agent of change<br>1. angel of death<br>2. coiled snake,
@@ -134,8 +152,9 @@
                                     data-works='[{"name": ">raziel<", "href": "../works/raziel.html"}, {"name": ">zoe<", "href": "../works/zoe.html"}]'>view</button>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Works Dropdown Modal -->
                 <div class="works-modal" id="worksModal">
