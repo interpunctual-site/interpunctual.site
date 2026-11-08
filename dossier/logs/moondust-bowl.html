@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moondust bowl (blueberry oatmeal) • interpunctual site</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="icon" type="image/x-icon" href="../../media/interpunct-favicon.ico">
+
+    <!-- Inline responsive table CSS to keep this page self-contained -->
+    <style>
+        /* Responsive tables: allow horizontal scroll on small screens */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            /* smooth scrolling on iOS */
+            margin-bottom: 1rem;
+            max-height: 400px;
+            /* allow vertical scrolling for long tables */
+            position: relative;
+        }
+
+        /* Add scrollbar hint */
+        /* .table-responsive::after {
+      content: '⬅ scroll ➡';
+      position: sticky;
+      bottom: -1.5rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.5rem 0;
+      pointer-events: none;
+    } */
+
+        /* Keep table layout stable on wide screens; ensure full-width within the wrapper */
+        .table-responsive .ingredient-table {
+            width: 100%;
+            min-width: 640px;
+            /* ensures table can overflow on narrow screens and be scrolled */
+            border-collapse: collapse;
+        }
+
+        /* Reduce cell padding and avoid wrapping where appropriate on small screens */
+        @media (max-width: 640px) {
+            .table-responsive .ingredient-table {
+                font-size: 0.95rem;
+            }
+
+            .table-responsive .ingredient-table th,
+            .table-responsive .ingredient-table td {
+                padding: 0.5rem 0.6rem;
+                white-space: nowrap;
+                /* keep each column intact so horizontal scroll is usable */
+            }
+
+            /* Show scroll hint only on mobile */
+            .table-responsive::after {
+                display: block;
+            }
+        }
+
+        /* When viewport is wider than min-width, remove forced min-width so table sits normally */
+        @media (min-width: 641px) {
+            .table-responsive .ingredient-table {
+                min-width: 0;
+                table-layout: auto;
+            }
+
+            /* Hide scroll hint on desktop */
+            .table-responsive::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop playsinline>
+        <source src="../../media/site-bg.mp4" type="video/mp4">
+    </video>
+    <div class="container">
+        <div class="content-scroll">
+
+            <div class="scrollbox-section">
+                <h3 class="scrollbox-section-title">moondust bowl <span id="moondust-dish-total"
+                        class="recipe-title-total"></span></h3>
+                <!-- <p class="recipe-meta">quick oats • wild blueberries</p> -->
+
+                <div class="serving-control">
+                    <label for="serving-slider">servings</label>
+                    <input type="range" id="serving-slider" min="1" max="10" value="1" step="0.25">
+                    <span id="serving-value" class="serving-value">1</span>
+                </div>
+
+                <h4 class="subsection-title">contents</h4>
+                <div class="table-responsive">
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moondust-bowl"></tbody>
+                    </table>
+                </div>
+                <p id="moondust-bowl-total" class="recipe-total"></p>
+
+                <h4 class="subsection-title">Method</h4>
+                <ol class="procedure-list">
+                    <li><strong>pre-production: 2 minutes</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                        <li>bring milk to a boil in a small saucepan</li>
+                    </ul>
+                    </ul>
+
+                    <li><strong>production: 2 minutes</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                        <li>add oats to milk and simmer for about 2 minutes until thickened.</li>
+                    </ul>
+                    <li><strong>post-production: 1 minute</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                        <li>pour frozen blueberries into oats and stir to combine before serving in a bowl.</li>
+                    </ul>
+                </ol>
+            </div>
+        </div>
+
+        <nav class="linktree">
+            <ul>
+                <li><a href="../logs.html" id="back-link" class="form-back">back</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="../../app.js"></script>
+    <script>
+        const servingSlider = document.getElementById('serving-slider');
+        const servingValue = document.getElementById('serving-value');
+
+        const recipeData = {
+            'moondust-bowl': [
+                { name: 'quick oats', base: 0.5, unit: 'cup', cost: 0.14, calories: '150', url: 'https://www.walmart.com/ip/Great-Value-Whole-Grain-Quick-Rolled-Oats/10314926?wl13=3286&wmlspartner=wlpa&selectedSellerId=0&swrs=false' },
+                { name: 'frozen blueberries', base: 0.5, unit: 'cup', cost: 0.52, calories: '40', url: 'https://www.walmart.com/ip/Great-Value-Wild-Blueberries-40-oz-Frozen/700604894?classType=REGULAR&from=/search' },
+                { name: 'lactose-free milk', base: 1, unit: 'cup', cost: 0.39, calories: '130', url: 'https://www.walmart.com/ip/Great-Value-Lactose-Free-2-Reduced-Fat-Milk-Half-Gallon-64-fl-oz/10447934?classType=REGULAR&from=/search' },
+            ]
+        };
+
+        function formatQuantity(value) {
+            const rounded = Math.round(value * 100) / 100;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+        }
+
+        function calculateSectionTotal(items, multiplier) {
+            return items.reduce((sum, item) => sum + item.cost * multiplier, 0);
+        }
+
+        function calculateSectionCalories(items, multiplier) {
+            return items.reduce((sum, item) => {
+                if (!item.calories) return sum;
+                const numericCalories = parseFloat(item.calories.replace(/[^0-9.]/g, ''));
+                return sum + (Number.isNaN(numericCalories) ? 0 : numericCalories * multiplier);
+            }, 0);
+        }
+
+        function formatCaloriesValue(calories, multiplier) {
+            if (!calories) return '';
+            const rawCalories = String(calories).trim();
+            const prefix = rawCalories.startsWith('~') ? '~' : '';
+            const numericCalories = parseFloat(rawCalories.replace(/[^0-9.]/g, ''));
+            if (Number.isNaN(numericCalories)) return '';
+            const scaledCalories = numericCalories * multiplier;
+            return `${prefix}${Math.round(scaledCalories)}`;
+        }
+
+        function renderRecipe(listId, items, multiplier) {
+            const tableBody = document.getElementById(listId);
+            const totalElement = document.getElementById(listId + '-total');
+            const totalCost = calculateSectionTotal(items, multiplier);
+            const totalCalories = calculateSectionCalories(items, multiplier);
+
+            tableBody.innerHTML = items.map((item) => {
+                const quantity = item.base * multiplier;
+                const amount = `${formatQuantity(quantity)} ${item.unit}`;
+                const cost = (item.cost * multiplier).toFixed(2);
+                const calText = item.calories ? formatCaloriesValue(item.calories, multiplier) : '';
+                return `<tr><td><a class="ingredient-link" href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">${item.name}</a></td><td>${amount}</td><td>$${cost}</td><td>${calText}</td></tr>`;
+            }).join('');
+
+            if (totalElement) {
+                totalElement.textContent = `TOTAL ≈ $${totalCost.toFixed(2)} • ${Math.round(totalCalories)} CAL`;
+            }
+        }
+
+        function updateRecipeView() {
+            const multiplier = Number(servingSlider.value);
+            servingValue.textContent = `${multiplier}`;
+
+            renderRecipe('moondust-bowl', recipeData['moondust-bowl'], multiplier);
+
+            const dishCost = calculateSectionTotal(recipeData['moondust-bowl'], multiplier);
+            const dishCalories = calculateSectionCalories(recipeData['moondust-bowl'], multiplier);
+            document.getElementById('moondust-dish-total').textContent = `• total $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL • 5 min`;
+        }
+
+        servingSlider.addEventListener('input', updateRecipeView);
+        updateRecipeView();
+    </script>
+</body>
+
+</html>

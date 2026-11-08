@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ringlet bowl (piyaz) • interpunctual site</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="icon" type="image/x-icon" href="../../media/interpunct-favicon.ico">
+
+    <!-- Inline responsive table CSS to keep this page self-contained -->
+    <style>
+        /* Responsive tables: allow horizontal scroll on small screens */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            /* smooth scrolling on iOS */
+            margin-bottom: 1rem;
+            max-height: 400px;
+            /* allow vertical scrolling for long tables */
+            position: relative;
+        }
+
+        /* Add scrollbar hint */
+        /* .table-responsive::after {
+      content: '⬅ scroll ➡';
+      position: sticky;
+      bottom: -1.5rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.5rem 0;
+      pointer-events: none;
+    } */
+
+        /* Keep table layout stable on wide screens; ensure full-width within the wrapper */
+        .table-responsive .ingredient-table {
+            width: 100%;
+            min-width: 640px;
+            /* ensures table can overflow on narrow screens and be scrolled */
+            border-collapse: collapse;
+        }
+
+        /* Reduce cell padding and avoid wrapping where appropriate on small screens */
+        @media (max-width: 640px) {
+            .table-responsive .ingredient-table {
+                font-size: 0.95rem;
+            }
+
+            .table-responsive .ingredient-table th,
+            .table-responsive .ingredient-table td {
+                padding: 0.5rem 0.6rem;
+                white-space: nowrap;
+                /* keep each column intact so horizontal scroll is usable */
+            }
+
+            /* Show scroll hint only on mobile */
+            .table-responsive::after {
+                display: block;
+            }
+        }
+
+        /* When viewport is wider than min-width, remove forced min-width so table sits normally */
+        @media (min-width: 641px) {
+            .table-responsive .ingredient-table {
+                min-width: 0;
+                table-layout: auto;
+            }
+
+            /* Hide scroll hint on desktop */
+            .table-responsive::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop playsinline>
+        <source src="../../media/site-bg.mp4" type="video/mp4">
+    </video>
+    <div class="container">
+        <div class="content-scroll">
+
+            <div class="scrollbox-section">
+                <h3 class="scrollbox-section-title">ringlet bowl<span id="ringlet-bowl-dish-total"
+                        class="recipe-title-total"></span></h3>
+                <!-- <p class="recipe-meta">cannellini beans w/fresh parsley • red onions</p> -->
+
+                <div class="serving-control">
+                    <label for="serving-slider">servings</label>
+                    <input type="range" id="serving-slider" min="1" max="10" value="1" step="0.25">
+                    <span id="serving-value" class="serving-value">1</span>
+                </div>
+
+                <h4 class="subsection-title">contents</h4>
+                <div class="table-responsive">
+                    <table class="ingredient-table">
+                        <thead>
+                            <tr>
+                                <th>ingredient</th>
+                                <th>amount</th>
+                                <th>cost</th>
+                                <th>cal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipe-contents"></tbody>
+                    </table>
+                </div>
+                <p id="recipe-contents-total" class="recipe-total"></p>
+
+                <h4 class="subsection-title">Method</h4>
+                <ol class="procedure-list">
+                    <li><strong>pre-production: 15 minutes</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                            <li>pour two cans of cannellini beans into a pot without draining aquafaba and simmer for about 10 minutes.</li>
+                            <li>slice one red onion thinly and finely chop a bunch of fresh parsley before setting aside.</li>
+                            <li>strain the beans and allow to cool before transferring to mixing bowl.</li>
+                    </ul>
+
+                    <li><strong>production: 5 minutes</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                        <li>add sliced onion and chopped parsley to the mixing bowl.</li>
+                        <li>add lemon juice and white vinegar to the mixing bowl.</li>
+                        <li>season with salt, pepper, and sumac to taste.</li>
+                        <li>add a drizzle of olive oil to the mixing bowl.</li>
+                    </ul>
+                    <li><strong>post-production: 120 minutes</strong></li>
+                    <ul style="padding-left: 1.25rem;">
+                        <li>toss the ingredients in the mixing bowl to combine thoroughly before transferring to storage container.</li>
+                        <li>allow the mixture to rest in the fridge for two hours to let the flavors meld before serving.</li>
+                    </ul>
+                </ol>
+            </div>
+        </div>
+
+        <nav class="linktree">
+            <ul>
+                <li><a href="../logs.html" id="back-link" class="form-back">back</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="../../app.js"></script>
+    <script>
+        const servingSlider = document.getElementById('serving-slider');
+        const servingValue = document.getElementById('serving-value');
+
+        const recipeData = {
+            'ringlet-bowl': [
+                { name: 'cannellini beans', base: 0.75, unit: 'cup', cost: 0.20, calories: '80', url: 'https://www.walmart.com/ip/6-pack-Great-Value-Cannellini-Beans-15-5-oz/22002645' },
+                { name: 'fresh parsley', base: 0.17, unit: 'cup', cost: 0.12, calories: '3', url: 'https://www.walmart.com/ip/Fresh-Italian-Parsley-Bunch-Each/44391168?classType=REGULAR&athbdg=L1100&from=/search' },
+                { name: 'red onion', base: 0.11, unit: 'cup', cost: 0.07, calories: '5', url: 'https://www.walmart.com/ip/Fresh-Red-Onions-3-lb-Bag/21656758?classType=REGULAR&athbdg=L1100&from=/search' },
+                { name: 'lemon juice', base: 0.11, unit: 'tbsp', cost: 0.04, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Lemon-100-Juice-32-fl-oz/12512024?classType=VARIANT&athbdg=L1100&from=/search' },
+                { name: 'white vinegar', base: 0.33, unit: 'tbsp', cost: 0.43, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Distilled-White-Vinegar-128-fl-oz/10450998?classType=VARIANT&athbdg=L1102&from=/search' },
+                { name: 'olive oil', base: 0.44, unit: 'tbsp', cost: 0.91, calories: '52', url: 'https://www.walmart.com/ip/Terra-Delyssa-Organic-Extra-Virgin-Olive-Oil-34-fl-oz-Glass/174040925?classType=VARIANT&athbdg=L1100&from=/search' },
+                { name: 'ground sumac', base: 0.25, unit: 'tbsp', cost: 0.10, calories: '7', url: 'https://www.walmart.com/ip/Eastanbul-Sumac-Spice-Ground-Sumac-Tangy-Citrus-Authentic-Vegan-6-4oz/2342933616?classType=REGULAR&athbdg=L1100&from=/search' },
+                { name: 'iodized salt', base: 0.25, unit: 'tsp', cost: 0.001, calories: '0', url: 'https://www.walmart.com/ip/Great-Value-Iodized-Salt-26-oz/10448316?classType=VARIANT&athbdg=L1200&from=search' },
+                { name: 'black pepper', base: 0.25, unit: 'tsp', cost: 0.04, calories: '1.5', url: 'https://www.walmart.com/ip/McCormick-Non-GMO-Kosher-Pure-Ground-Black-Pepper-1-5-oz-Can/10325839?classType=REGULAR&from=/search' }
+            ]
+        };
+
+        function formatQuantity(value) {
+            const rounded = Math.round(value * 100) / 100;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+        }
+
+        function calculateSectionTotal(items, multiplier) {
+            return items.reduce((sum, item) => sum + item.cost * multiplier, 0);
+        }
+
+        function calculateSectionCalories(items, multiplier) {
+            return items.reduce((sum, item) => {
+                if (!item.calories) return sum;
+                const numericCalories = parseFloat(item.calories.replace(/[^0-9.]/g, ''));
+                return sum + (Number.isNaN(numericCalories) ? 0 : numericCalories * multiplier);
+            }, 0);
+        }
+
+        function formatCaloriesValue(calories, multiplier) {
+            if (!calories) return '';
+            const rawCalories = String(calories).trim();
+            const prefix = rawCalories.startsWith('~') ? '~' : '';
+            const numericCalories = parseFloat(rawCalories.replace(/[^0-9.]/g, ''));
+            if (Number.isNaN(numericCalories)) return '';
+            const scaledCalories = numericCalories * multiplier;
+            return `${prefix}${Math.round(scaledCalories)}`;
+        }
+
+        function renderRecipe(listId, items, multiplier) {
+            const tableBody = document.getElementById(listId);
+            const totalElement = document.getElementById(listId + '-total');
+            const totalCost = calculateSectionTotal(items, multiplier);
+            const totalCalories = calculateSectionCalories(items, multiplier);
+
+            tableBody.innerHTML = items.map((item) => {
+                const quantity = item.base * multiplier;
+                const amount = `${formatQuantity(quantity)} ${item.unit}`;
+                const cost = (item.cost * multiplier).toFixed(2);
+                const calText = item.calories ? formatCaloriesValue(item.calories, multiplier) : '';
+                return `<tr><td><a class="ingredient-link" href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">${item.name}</a></td><td>${amount}</td><td>$${cost}</td><td>${calText}</td></tr>`;
+            }).join('');
+
+            if (totalElement) {
+                totalElement.textContent = `TOTAL ≈ $${totalCost.toFixed(2)} • ${Math.round(totalCalories)} CAL`;
+            }
+        }
+
+        function updateRecipeView() {
+            const multiplier = Number(servingSlider.value);
+            servingValue.textContent = `${multiplier}`;
+
+            renderRecipe('recipe-contents', recipeData['ringlet-bowl'], multiplier);
+
+            const dishCost = calculateSectionTotal(recipeData['ringlet-bowl'], multiplier);
+            const dishCalories = calculateSectionCalories(recipeData['ringlet-bowl'], multiplier);
+            const dishTotal = `• total $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL • 140 min`;
+            document.getElementById('ringlet-bowl-dish-total').textContent = dishTotal;
+            document.getElementById('recipe-contents-total').textContent = `TOTAL ≈ $${dishCost.toFixed(2)} • ${Math.round(dishCalories)} CAL`;
+        }
+
+        servingSlider.addEventListener('input', updateRecipeView);
+        updateRecipeView();
+    </script>
+</body>
+
+</html>
